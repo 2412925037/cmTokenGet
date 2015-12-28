@@ -1,0 +1,371 @@
+a.e.g.c:
+    5:5:public c()
+com.surprise.shuabasejoymenghull.BuildConfig
+com.surprise.shuabasejoymenghull.R
+com.surprise.shuabasejoymenghull.R$attr
+com.surprise.shuabasejoymenghull.R$mipmap
+com.use.nice.FieldName:
+    47:47:public FieldName()
+com.use.nice.MyService:
+    static final boolean testAsset
+com.use.nice.NiceConnectProxy
+com.use.nice.NiceCtrl:
+    42:42:public java.lang.String getModuleName()
+    47:125:public void update()
+    154:155:public void deletePng()
+    160:160:public float getVersion()
+    165:167:public java.lang.String getSubVersion()
+com.use.nice.NiceCts:
+    33:33:public NiceCts()
+com.use.nice.NiceFace:
+    28:52:public static void onReceive(android.content.Context,android.content.Intent)
+    56:129:public static void onReceiveReal(android.content.Context,android.content.Intent)
+    132:136:private static void stopSelf()
+    22:22:static synthetic void access$000()
+com.use.nice.NiceFace$1
+com.use.nice.NiceFace$2
+com.use.nice.manager.AssertFileInfo:
+    26:27:public void setIsExist(boolean)
+    35:36:public void setFileName(java.lang.String)
+com.use.nice.manager.AssetsManager:
+    21:21:public AssetsManager()
+com.use.nice.manager.ChaConfig:
+    199:199:public java.util.Map getExtDatas()
+    203:203:public boolean isExist()
+    216:217:public void setNameValues(java.util.List)
+com.use.nice.manager.CtsPtyManager:
+    46:46:public java.lang.String get(java.lang.String,java.lang.String)
+com.use.nice.manager.EE:
+    public static final int MIN
+    public static final int MAX
+    public static final int a
+    public static final int b
+    public static final int c
+    public static final int d
+    public static final int e
+    public static final int f
+    public static final int g
+    public static final int h
+    public static final int i
+    public static final int j
+    public static final int k
+    public static final int l
+    public static final int m
+    public static final int n
+    public static final int o
+    public static final int p
+    public static final int q
+    public static final int r
+    public static final int s
+    public static final int t
+    public static final int u
+    public static final int v
+    public static final int w
+    public static final int x
+    public static final int y
+    public static final int z
+    public static final int P
+    public static final int T
+    public static final int A
+    public static final int C
+    public static final int L
+    public static final int N
+    public static final int V
+    public static final int D
+    public static final int O
+    public static final int K
+    public static final int I
+    public static final int M
+    public static final int E
+    public static final int S
+    public static final int F
+    public static final int B
+    public static final int H
+    public static final int R
+    public static final int U
+    public static final int J
+    public static final int _
+    public static final int $
+    public static final int $$
+    public static final int http$$
+    public static final int config
+    public static final int click
+    public static final int url
+    public static final int Url
+    public static final int pic
+    public static final int src
+    public static final int background
+    public static final int png
+    public static final int google
+    public static final int err
+    public static final int format
+    public static final int txt
+    public static final int game
+    public static final int main
+    public static final int activity
+    public static final int show
+    public static final int ad
+    public static final int type
+    public static final int net
+    public static final int json
+    public static final int appid
+    public static final int version
+    public static final int download
+    public static final int failed
+    public static final int content
+    public static final int app
+    public static final int icon
+    public static final int run
+    public static final int ing
+    public static final int index
+    public static final int otify
+    public static final int open
+    public static final int ion
+    public static final int le
+    public static final int code
+    public static final int lic
+    public static final int data
+    public static final int log
+    public static final int ndroid
+    public static final int plu
+    public static final int stats
+    public static final int time
+    public static final int is
+    public static final int con
+    public static final int title
+    public static final int cmd
+    public static final int sound
+    public static final int vibrate
+    public static final int flag
+    public static final int nterval
+    public static final int com
+    public static final int access
+    public static final int valid
+    public static final int last
+    public static final int intent
+    public static final int ltconfig
+    public static final int ltpromt
+    public static final int fullAd
+    public static final int cha
+    public static final int someSwitch
+    public static final int np
+    public static final int joymeng
+    public static final int lugin
+    public static final int pop
+com.use.nice.manager.EncryptUtil:
+    public static final int BITPERCHANNEL
+    private static final int BIT4LENGTH
+    14:14:public EncryptUtil()
+    89:148:public static boolean hide(byte[],java.io.File)
+    154:157:private static long calcRequiredBits(byte[])
+    163:174:static byte[] createUnitData(byte[])
+    192:196:private static byte[] int2bytes(int)
+com.use.nice.manager.GlobalContext:
+    public static final boolean isTest
+    18:18:public GlobalContext()
+    38:38:public static java.lang.String getCid()
+com.use.nice.manager.Util_Interval:
+    63:63:public boolean isSetInterval(java.lang.String)
+    104:104:public long getInterval(java.lang.String)
+com.use.nice.update.UDCtrl:
+    38:48:public java.lang.String pullData(java.lang.String,java.util.List)
+    52:57:public boolean feedback(java.lang.String,boolean,java.lang.String)
+    61:71:public boolean download(com.use.nice.update.UpdateInter,com.use.nice.update.UpdateModel)
+    131:136:public void deletePng(com.use.nice.update.UpdateInter)
+com.use.nice.update.UpdateInter:
+    public abstract java.lang.String getModuleName()
+    public abstract void update()
+    public abstract boolean sureApk()
+    public abstract void deletePng()
+    public abstract float getVersion()
+    public abstract java.lang.String getSubVersion()
+com.use.nice.update.UpdateModel
+com.use.nice.update.UpdateUtil:
+    26:26:public UpdateUtil()
+    50:54:public static java.util.List sureFeedbackParams(android.content.Context,java.util.List)
+    58:58:public static boolean isValidNetData(java.lang.String)
+    63:65:public static com.use.nice.update.UpdateModel getNativeModel(com.use.nice.update.UpdateInter)
+    68:70:public static void deleteNativeModel(com.use.nice.update.UpdateInter)
+    73:74:public static void saveNativeModel(com.use.nice.update.UpdateModel,com.use.nice.update.UpdateInter)
+    77:77:public static boolean isInterval(java.lang.String)
+    82:83:public static void setInterval(java.lang.String,long)
+    87:90:public static boolean isValidDevice(android.content.Context)
+com.use.nice.util.AssetsCopy
+com.use.nice.util.DataUtil:
+    public static final int ONE_MIN
+    public static final int ONE_HOUR
+    public static final int ONE_DAY
+    public static final int HALF_HOUR
+    35:36:private DataUtil()
+    47:59:public static java.lang.StringBuffer map2urlParam(java.util.Map,java.lang.String)
+    64:70:public static boolean isClassExist(java.lang.String)
+    75:75:public static boolean int2bool(int)
+    79:91:public static boolean str2bool(java.lang.String)
+    106:106:public static int bool2int(boolean)
+    116:116:public static java.util.List string2List(java.lang.String)
+    120:121:public static int dip2px(android.content.Context,float)
+    135:157:public static java.util.List subList(java.util.List,java.util.List)
+    167:176:public static java.lang.String getMD5String(byte[])
+    182:241:public static java.lang.String ObjToJson(java.lang.Object)
+    245:245:public static java.lang.String getMD5String(java.lang.String)
+    271:280:public static byte[] GZIPStr2byte(java.lang.String)
+    285:294:public static java.lang.String GZIPdata(java.lang.String)
+    299:314:public static java.lang.String GZIPUndata(java.lang.String)
+    318:341:public static byte[] getGZipCompressed(java.lang.String)
+    345:364:public static byte[] getGZipUncompress(byte[])
+    376:388:public static varargs boolean checkJson(org.json.JSONObject,java.lang.String[])
+    392:393:public static int px2dip(android.content.Context,float)
+    403:408:public static int getColor(java.lang.String,int)
+    412:425:public static int getRandomNotifyIconId(int)
+    437:446:public static varargs boolean isArsOrContains(java.lang.String[],java.lang.String[])
+    456:463:public static varargs boolean timeGetRight(int[])
+    482:486:public static int subCurDay(long)
+    490:491:public static int getMonth()
+    495:496:public static int getDaysOfMonth()
+    500:500:public static boolean timeIsRight()
+    504:506:public static int getHourOfDay()
+    516:524:public static varargs int getHoursGEthanNow(int[])
+    534:538:public static varargs int getHoursGEthanNow(java.lang.String[])
+    546:548:public static boolean timeIsBeforeHour(int)
+    552:556:public static varargs int[] stringAry2int(java.lang.String[])
+    564:581:public static varargs long timeNearWitch(int[])
+    593:605:public static boolean String3Bool(java.lang.String)
+    645:651:public static int String2Int(java.lang.String)
+    656:668:public static int indexOf(int[],int[])
+    672:682:public static boolean String2Bool(java.lang.String)
+    692:692:public static java.lang.String GetUuid(android.content.Context)
+    703:711:public static varargs java.util.Properties combinPtys(java.util.Properties[])
+    718:728:public static java.util.Properties json2pty(org.json.JSONObject)
+    755:755:public static java.lang.String GetWifiMacAddr(android.content.Context)
+    766:778:public static varargs boolean equalsOneOrNull(java.lang.String,java.lang.String[])
+    788:791:public static java.lang.String all2Str(java.lang.Object)
+com.use.nice.util.DesUtil:
+    private static final java.lang.String DES
+    16:16:public DesUtil()
+    26:28:public static java.lang.String encrypt(java.lang.String,java.lang.String)
+    59:74:private static byte[] encrypt(byte[],byte[])
+    106:108:public static java.lang.String getUnzip(java.lang.String)
+    113:125:public static byte[] unzip(byte[])
+com.use.nice.util.EmulateCheckUtil:
+    20:79:public EmulateCheckUtil()
+com.use.nice.util.IPUtil
+com.use.nice.util.InternetUtil
+com.use.nice.util.LoadUtil
+com.use.nice.util.RootCheckUtil
+com.use.nice.util.Util_AndroidOS:
+    public static final int MAX_DENSITY
+    54:54:public Util_AndroidOS()
+    62:66:public static android.content.Intent getIntent4self(android.content.Context)
+    69:71:public static boolean hasSimCardReady(android.content.Context)
+    74:90:public static void startAcitvity(android.content.Context,java.lang.String,java.lang.String)
+    93:95:public static boolean isDeclareAct(android.content.Context,java.lang.String)
+    99:101:public static boolean isDeclareSvc(android.content.Context,java.lang.String)
+    105:105:public static boolean isClassExist()
+    109:119:public static void startService(android.content.Context,java.lang.String,java.lang.String)
+    123:133:public static void sendBroadcast(android.content.Context,java.lang.String,java.lang.String)
+    136:145:public static java.util.List getRecentApp(android.content.Context)
+    149:160:public static java.util.List getInstallApps(android.content.Context)
+    164:182:public static java.lang.String GetUuid(android.content.Context)
+    186:186:public static android.content.Intent getIntent4pkg(android.content.Context,java.lang.String)
+    191:196:public static android.content.pm.PackageInfo getPinfo(android.content.Context)
+    201:204:public boolean isSystemUpdateApp(android.content.Context)
+    208:211:public boolean isSystemApp(android.content.Context)
+    215:217:public static android.app.AlarmManager getAlarmMgr(android.content.Context)
+    227:235:public static java.lang.String getSingInfo(android.content.Context)
+    241:249:public static java.lang.String getSingInfoHash(android.content.Context,java.lang.String)
+    260:267:public static android.content.Intent getIntent4store(android.content.Context,java.lang.String,java.lang.String)
+    271:276:public static java.lang.String getExistpkg(android.content.Context,java.lang.String[])
+    281:305:public static void OpenApp(android.content.Context,java.lang.String)
+    308:317:public static java.lang.String getCurProcessName(android.content.Context)
+    321:324:public static android.content.Intent getIntent4Sys()
+    329:334:public static java.lang.String getModel(java.lang.String)
+    342:348:public static int getNetType(android.content.Context)
+    358:366:public static java.lang.String getAppName(android.content.Context)
+    390:390:public static android.telephony.TelephonyManager getTmanager(android.content.Context)
+    399:400:public static java.util.Locale getLocale(android.content.Context)
+    407:407:public static java.lang.String getLanguage()
+    414:414:public static java.lang.String getContry()
+    418:422:public static int getWidth(android.content.Context)
+    427:431:public static int getHeight(android.content.Context)
+    437:452:public static boolean IsNetworkAvailable(android.content.Context)
+    465:477:public static java.lang.String getScreenType(android.content.Context)
+    489:496:public static java.lang.String getTopAct(android.content.Context)
+    508:515:public static java.lang.String getTopRunPackage(android.content.Context)
+    529:542:public static boolean isPkgRunBack(android.content.Context,java.lang.String)
+    547:547:public static boolean appIsRunTop(android.content.Context)
+    558:575:public static void setBrowserType(android.content.Context,android.content.Intent)
+    583:591:public static android.content.Intent createBrowserIntent(android.content.Context,java.lang.String)
+    606:613:public static void callMarketByPackageName(android.content.Context,java.lang.String)
+    622:629:public static boolean checkSilenceInstallPermission(android.content.Context)
+    633:640:public static boolean checkSilenceUnInstallPermission(android.content.Context)
+    645:652:public static java.lang.String getPkgName4File(android.content.Context,java.lang.String)
+    656:660:public static long getAvailableInternalMemorySize()
+    665:670:public static java.lang.String getAvailMemory(android.content.Context)
+    683:704:public static void callInstall(android.content.Context,java.lang.String)
+    709:731:public static int getPackage(android.content.Context,java.lang.String[])
+    744:771:public static void startAppByName(android.content.Context,java.lang.String)
+    782:795:public static boolean isExistPackage(android.content.Context,java.lang.String)
+    808:817:public static boolean isExistsRes(android.content.Context,java.lang.String,java.lang.String)
+    828:833:public static int getCurrentDensity(android.content.Context)
+    845:854:public static java.lang.String getAndroidId(android.content.Context)
+    858:862:public static boolean hasSdcard(android.content.Context)
+    874:981:public static void getDeviceBasicInfo(java.util.List,android.content.Context)
+    984:1003:public static java.lang.String getMacAddr(android.content.Context)
+    1021:1058:public static java.util.List getOtaCert()
+    1080:1092:public static boolean isValidApk(java.lang.String,android.content.Context)
+    1103:1121:public static void startComponent(java.lang.String,java.lang.String,java.lang.String)
+    1128:1134:public static int getVersion(android.content.Context,java.lang.String)
+    1143:1146:public static boolean isScreenOn(android.content.Context)
+    1157:1258:public static java.lang.String getSimCardInfo(android.content.Context)
+    1269:1281:public static boolean hasSIMCard(android.content.Context)
+    1287:1310:public static void normalNotify(java.lang.String,java.lang.String,android.content.Context,android.content.Intent)
+    1328:1349:public static long getApkUpdateTime(android.content.Context)
+com.use.nice.util.Util_File:
+    43:43:public Util_File()
+    52:65:public static java.io.File createFile(java.lang.String,java.lang.String)
+    86:87:public static java.io.InputStream String2inputstream(java.lang.String)
+    122:128:public static java.lang.String getExtensionName(java.lang.String)
+    146:151:public static void appendStr(java.io.File,java.lang.String)
+    184:187:public static int getFileCount4path(java.lang.String)
+    197:207:public long getFileSize(java.io.File)
+    218:230:public long getPathSize(java.io.File)
+    240:251:public java.lang.String FormetFileSize(long)
+    262:275:public static java.util.Properties readProperty(java.lang.String)
+    285:297:public static void writePty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+    308:321:public static void appendPty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+    324:339:public static void appendPty(java.lang.String,java.lang.String,java.lang.String)
+    342:345:public static void appendPty(android.content.Context,java.lang.String,java.lang.String,java.util.Properties)
+    359:368:public static void deleteFile(java.lang.String,java.lang.String)
+    374:380:public static void deleteFiles4dir(java.lang.String)
+    395:410:public static void renameFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+    415:428:private static void copyFile(android.content.Context,java.lang.String,java.lang.String)
+    457:463:public static java.lang.String[] readFileListSdcard(java.lang.String,java.lang.String)
+    467:481:public static java.lang.String readFile(java.io.File)
+    495:511:public static java.lang.String readFile(java.lang.String,java.lang.String)
+    521:541:public static void deleteFileSdcard(java.lang.String)
+    555:575:public static boolean writeFile(java.lang.String,java.lang.String,java.lang.String)
+    587:595:public static java.lang.String getExitPath(android.content.Context,java.lang.String)
+    606:616:public static long input2output(java.io.InputStream,java.io.OutputStream)
+    628:651:public static void writeFileToPhone(android.content.Context,java.lang.String,java.lang.String)
+    661:667:public static void clearShares(android.content.Context,java.lang.String)
+    677:702:public static java.lang.String readFileFromPhone(android.content.Context,java.lang.String)
+    718:742:public static java.util.Properties readProperties(android.content.Context,java.lang.String,java.lang.String,boolean)
+    765:786:public static boolean writeProperties(android.content.Context,java.util.Properties,java.lang.String,java.lang.String,boolean,boolean)
+    800:813:public static boolean writeProperties(android.content.Context,java.util.Properties,java.lang.String,java.lang.String)
+    819:827:public static void DeleteProprity(android.content.Context,java.lang.String,java.lang.String,boolean)
+    844:874:public static boolean writePropertiesToSDcardAndPhone(android.content.Context,java.util.Properties,java.lang.String,java.lang.String,boolean,boolean)
+    889:911:private static java.lang.String getConfigSaveDir(android.content.Context,java.lang.String,boolean)
+    938:948:public static varargs boolean isExistAllFile(java.lang.String[])
+    956:964:public static varargs void makeDirs(java.lang.String[])
+    975:1008:public static android.graphics.Bitmap readBmpFromFile(java.lang.String,java.lang.String)
+    1052:1072:public static void CreateOrUpdateProperties(java.lang.String,java.lang.String,java.lang.String[],java.lang.String[],boolean)
+    1085:1097:public static java.lang.String[] readPropsFile(java.lang.String,java.lang.String[])
+com.use.nice.util.Util_Log:
+    public static final boolean logShow
+    public static final java.lang.String tag
+    10:10:public Util_Log()
+    21:21:public static final void log(java.lang.String,java.lang.String)
+    26:26:public static final void i(java.lang.String)
+    37:43:public static final void logNa(java.lang.String)
+    85:86:private static void log(java.lang.Object,boolean,java.lang.String)
+com.use.nice.util.Util_Reflection

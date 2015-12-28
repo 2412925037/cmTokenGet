@@ -1,0 +1,7 @@
+ChargeType=0
+channelId=1234567
+Fee=60
+promoterId=011
+cpId=001
+gameId=227
+ 

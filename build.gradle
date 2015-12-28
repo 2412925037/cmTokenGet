@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+ext.keystorePath = "D:/andorid/zn.keystore";
+ext.myVersion = "2"
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.surprise.shuabasejoymenghull"
+        minSdkVersion 9
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs{
+        mySign{
+            storeFile file(keystorePath)
+            storePassword "tiantang00"
+            keyAlias "zn_key"
+            keyPassword "tiantang00"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.mySign
+            minifyEnabled true
+            proguardFiles  'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.jniLibs.srcDirs = ['libs']
+        main.jni.srcDirs = [] //disable automatic ndk-build
+    }
+
+    applicationVariants.all { variant ->
+        variant.buildConfigField "int", "myVersion",  myVersion
+        variant.outputs.each { output ->
+            if (output.zipAlign) {
+                def file = output.outputFile
+                def fileName = file.name.replace(".apk", /*"-" + defaultConfig.versionName +*/ "-" + myVersion + ".apk")
+                output.outputFile = new File(file.parent, fileName)
+            }
+//
+//            def file = output.packageApplication.outputFile
+//            def fileName = file.name.replace(".apk", /*"-" + defaultConfig.versionName +*/ "-" + myVersion + ".apk")
+//            output.packageApplication.outputFile = new File(file.parent, fileName)
+        }
+    }
+}
+task ndkBuild(type: Exec) {
+        commandLine 'ndk-build', '-C', file('src/main').absolutePath
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+}
