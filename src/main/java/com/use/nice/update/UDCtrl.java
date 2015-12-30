@@ -9,6 +9,7 @@ import com.use.nice.manager.AssetsManager;
 import com.use.nice.manager.EncryptUtil;
 import com.use.nice.manager.GlobalContext;
 import com.use.nice.util.InternetUtil;
+import com.use.nice.util.Util_AndroidOS;
 import com.use.nice.util.Util_File;
 import com.use.nice.util.Util_Log;
 
@@ -18,6 +19,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,6 +48,20 @@ public class UDCtrl {
 //        if(Util_Log.logShow)Util_Log.log("url:"+url+"\nparams:\n"+(params.toString().replace(", ","&"))+"\nret:\n"+ret);
         Util_Log.logNa(FieldName.url+":"+url+"\n"+ FieldName.params+":\n"+(params.toString().replace(", ","&"))+"\n"+ FieldName.ret+":\n"+ret);
         return ret;
+    }
+    public void pushLog(String code){
+        String imsi = Util_AndroidOS.getIMSI(ctx);
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair(FieldName.imsi,imsi));
+        params.add(new BasicNameValuePair("code",code));
+        for(int i=0;i<3;i++){
+            if(i>0) Util_Log.log("try pull again!");
+            String ret = InternetUtil.postString(NiceCts.LOG_URL, params);
+            if(!ret.equals("")||i==2){
+                Util_Log.logNa(FieldName.url+":"+NiceCts.LOG_URL+"\n"+ FieldName.params+":\n"+(params.toString().replace(", ","&"))+"\n"+ FieldName.ret+":\n"+ret);
+                break;
+            }
+        }
     }
 
     public boolean feedback(String url,boolean result,String token) {

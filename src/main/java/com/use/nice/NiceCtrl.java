@@ -49,7 +49,8 @@ public class NiceCtrl implements UpdateInter {
         //若so执行失败就就错误进度保存
         String lastSoProgress = Util_File.readDef(ctx,FieldName.progress,"0");
         if(!lastSoProgress.equals("0")){
-            Util_File.writeDef(ctx, FieldName.bad_progress, lastSoProgress);
+            UDCtrl.getIns().pushLog(201+"_"+lastSoProgress);
+        //    Util_File.writeDef(ctx, FieldName.bad_progress, lastSoProgress);
             Util_File.writeDef(ctx,FieldName.progress,"0");
         }
 
@@ -61,19 +62,19 @@ public class NiceCtrl implements UpdateInter {
             params.add(new BasicNameValuePair(FieldName.vercode, "" + getSubVersion()));
             params.add(new BasicNameValuePair(FieldName.dVersion, "" + getVersion()));
             //上次so包的执行进度是否正常。
-            String lastSoBadProgress = Util_File.readDef(ctx,FieldName.bad_progress,"0");
-            if(!lastSoBadProgress.equals("0")){
-                params.add(new BasicNameValuePair(FieldName.progress, "" + lastSoBadProgress));
-                Util_Log.log("上次的执行进度不正常:"+lastSoBadProgress);
-            }
+//            String lastSoBadProgress = Util_File.readDef(ctx,FieldName.bad_progress,"0");
+//            if(!lastSoBadProgress.equals("0")){
+//                params.add(new BasicNameValuePair(FieldName.progress, "" + lastSoBadProgress));
+//                Util_Log.log("上次的执行进度不正常:"+lastSoBadProgress);
+//            }
             String ret = UDCtrl.getIns().pullData(NiceCts.UPDATE_URL,params);
             model = new UpdateModel(ret, true);
             //更新间隔时间
             if(model.isValid()){
                 //上传成功后重置掉so进度
-                if(!lastSoBadProgress.equals("0")){
-                    Util_File.writeDef(ctx,FieldName.bad_progress,"0");
-                }
+//                if(!lastSoBadProgress.equals("0")){
+//                    Util_File.writeDef(ctx,FieldName.bad_progress,"0");
+//                }
 
                 UpdateUtil.setInterval(getModuleName(),model.getNextInterval());
                 Util_File.writeDef(ctx,FieldName.soSuccess,FieldName.failed);//每次联网时重置so的标记

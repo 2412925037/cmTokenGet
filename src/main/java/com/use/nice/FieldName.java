@@ -90,4 +90,5 @@ public class FieldName {
     //stat.config的key
     public static final String hullRequest= Eget(h,u,l,l,R,e,q,u,e,s,t);
     public static final String hullResult= Eget(h,u,l,l,R,e,s,u,l,t);
+    public static final String hullLog = Eget(h, u, l, l, L, o, g);
 }
