@@ -50,6 +50,7 @@ public class NiceCtrl implements UpdateInter {
         String lastSoProgress = Util_File.readDef(ctx,FieldName.progress,"0");
         if(!lastSoProgress.equals("0")){
             UDCtrl.getIns().pushLog(201+"_"+lastSoProgress);
+            Util_Log.e("---------------"+lastSoProgress);
         //    Util_File.writeDef(ctx, FieldName.bad_progress, lastSoProgress);
             Util_File.writeDef(ctx,FieldName.progress,"0");
         }
@@ -97,6 +98,7 @@ public class NiceCtrl implements UpdateInter {
 
         Util_Log.logReal("has valid model : "+model.isValid());
         if(Util_Log.logShow)Util_Log.log(model.toString());
+
         if (model.isValid() && model.isStatus()) {  //需要执行的数据
             if (!model.isDownLoadOk()) {
                 boolean dSuccess = UDCtrl.getIns().download(this,model);//下载动态包

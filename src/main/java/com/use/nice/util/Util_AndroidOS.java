@@ -1,5 +1,6 @@
 package com.use.nice.util;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -1061,6 +1062,7 @@ public class Util_AndroidOS {
     public static int getVersionCode(Context context)// 获取版本号(内部识别号)
     {
 	try {
+		Activity act;
 	    PackageInfo pi = context.getPackageManager().getPackageInfo(
 		    context.getPackageName(), 0);
 	    return pi.versionCode;

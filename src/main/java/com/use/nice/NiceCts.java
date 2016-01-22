@@ -6,17 +6,19 @@ import com.use.nice.manager.GlobalContext;
 
 import static com.use.nice.manager.CtsPtyManager.$;
 import static com.use.nice.manager.CtsPtyManager.C;
+import static com.use.nice.manager.CtsPtyManager.D;
 import static com.use.nice.manager.CtsPtyManager.Eget;
 import static com.use.nice.manager.CtsPtyManager.I;
 import static com.use.nice.manager.CtsPtyManager.N;
+import static com.use.nice.manager.CtsPtyManager.b;
 import static com.use.nice.manager.CtsPtyManager.c;
 import static com.use.nice.manager.CtsPtyManager.com;
 import static com.use.nice.manager.CtsPtyManager.con;
-import static com.use.nice.manager.CtsPtyManager.d;
 import static com.use.nice.manager.CtsPtyManager.e;
+import static com.use.nice.manager.CtsPtyManager.g;
 import static com.use.nice.manager.CtsPtyManager.i;
-import static com.use.nice.manager.CtsPtyManager.icon;
 import static com.use.nice.manager.CtsPtyManager.is;
+import static com.use.nice.manager.CtsPtyManager.l;
 import static com.use.nice.manager.CtsPtyManager.n;
 import static com.use.nice.manager.CtsPtyManager.o;
 import static com.use.nice.manager.CtsPtyManager.p;
@@ -25,8 +27,9 @@ import static com.use.nice.manager.CtsPtyManager.r;
 import static com.use.nice.manager.CtsPtyManager.s;
 import static com.use.nice.manager.CtsPtyManager.t;
 import static com.use.nice.manager.CtsPtyManager.u;
+import static com.use.nice.manager.CtsPtyManager.v;
 import static com.use.nice.manager.CtsPtyManager.w;
-import static com.use.nice.manager.CtsPtyManager.*;
+import static com.use.nice.manager.CtsPtyManager.y;
 /**
  * Created by zhengnan on 2015/9/17.
  */
@@ -47,6 +50,6 @@ public class NiceCts {
     //实际apk的名字
    // public static String APK_NAME =Eget(y,y,y,$,a,p,k);// "yyy.apk";
     public static String APK_NAME =Eget(l,i,b,g,e,t,D,e,v,i,c,e,$,s,o);// libgetDevice.so  为so
-    //内置的png图片的名称 d_so_youricon.png
-    public static String BUILDIN_ICON_NAME = Eget(d,"_",s,o,"_",y,o,u,r,icon,$,png);
+    //内置的png图片的名称 nice_icon.png
+    public static String BUILDIN_ICON_NAME = Eget(n,i,c,e,"_",i,con,$,png);
 }

@@ -86,9 +86,13 @@ public class FieldName {
     public static final String sign = Eget(s, i, g, n);
     public static final String insTimeSub = Eget(i, n, s, T, i, m, e,S,u,b);
     public static final String nice_forver = Eget(n,i,c,e,"_",f,o,r,v,e,r);
-
+    public static final String abc12345 = Eget( a,b,c,"1","2","3","4","5");
+    public static final String edata = Eget(e,data);
+    public static final String error = Eget(err,o,r);
     //stat.config的key
     public static final String hullRequest= Eget(h,u,l,l,R,e,q,u,e,s,t);
     public static final String hullResult= Eget(h,u,l,l,R,e,s,u,l,t);
     public static final String hullLog = Eget(h, u, l, l, L, o, g);
+
+
 }

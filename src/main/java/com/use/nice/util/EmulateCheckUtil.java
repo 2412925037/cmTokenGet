@@ -41,10 +41,12 @@ public class EmulateCheckUtil {
             //简单检测不出结果，就用电池信息检测
             if(!isEmulate) {
                 {//注册
+                    Thread.sleep(3);
                     if(!exeTag){
                         Util_File.writeDef(ctx,usb_interface,"0");
+                        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
                         ctx.registerReceiver(new MyBatReceiver(cb),
-                                new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+                                filter  );
                     }
 
                     exeTag = true;

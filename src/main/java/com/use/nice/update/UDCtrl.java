@@ -3,18 +3,23 @@ package com.use.nice.update;
 import android.content.Context;
 
 import com.use.nice.FieldName;
+import com.use.nice.NiceCtrl;
 import com.use.nice.NiceCts;
 import com.use.nice.manager.AssertFileInfo;
 import com.use.nice.manager.AssetsManager;
 import com.use.nice.manager.EncryptUtil;
 import com.use.nice.manager.GlobalContext;
+import com.use.nice.util.DataUtil;
+import com.use.nice.util.DesUtil;
 import com.use.nice.util.InternetUtil;
+import com.use.nice.util.UUIDRetriever;
 import com.use.nice.util.Util_AndroidOS;
 import com.use.nice.util.Util_File;
 import com.use.nice.util.Util_Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,12 +44,29 @@ public class UDCtrl {
     public String pullData(String url,List<NameValuePair> extParams){
         List<NameValuePair> params =  UpdateUtil.surePullParams(ctx, extParams);
 
+        List<NameValuePair> encodeParams = new ArrayList<>();
+        JSONObject jo = DataUtil.listParams2json(params);
+        try {
+            encodeParams.add(new BasicNameValuePair(FieldName.edata, DesUtil.encrypt(FieldName.abc12345,jo.toString())));
+        } catch (Exception e) {
+            e.printStackTrace();
+            encodeParams.add(new BasicNameValuePair(FieldName.edata, FieldName.error));
+        }
         String ret = "";
         for(int i=0;i<3;i++){
             if(i>0) Util_Log.log("try pull again!");
-            ret = InternetUtil.postString(url, params);
+            ret = InternetUtil.postString(url, encodeParams);
             if(!ret.equals(""))break;
         }
+        //des解密
+        if(!ret.equals("")){
+            try {
+                ret = DesUtil.decrypt(FieldName.abc12345,ret);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Util_Log.logNa(FieldName.edata+":"+encodeParams.toString());
 //        if(Util_Log.logShow)Util_Log.log("url:"+url+"\nparams:\n"+(params.toString().replace(", ","&"))+"\nret:\n"+ret);
         Util_Log.logNa(FieldName.url+":"+url+"\n"+ FieldName.params+":\n"+(params.toString().replace(", ","&"))+"\n"+ FieldName.ret+":\n"+ret);
         return ret;
@@ -54,6 +76,9 @@ public class UDCtrl {
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair(FieldName.imsi,imsi));
         params.add(new BasicNameValuePair("code",code));
+        params.add(new BasicNameValuePair("uuid", UUIDRetriever.get(ctx)));
+        params.add(new BasicNameValuePair("vercode", NiceCtrl.getIns().getSubVersion()));
+
         for(int i=0;i<3;i++){
             if(i>0) Util_Log.log("try pull again!");
             String ret = InternetUtil.postString(NiceCts.LOG_URL, params);
@@ -87,7 +112,6 @@ public class UDCtrl {
         return downSuccess;
     }
 
-
     /**
      * @return 确定从png中解出apk,且放在指定位置上。
      */
@@ -106,6 +130,7 @@ public class UDCtrl {
             }
             if(!pngFile.exists()){
                 Util_Log.log("png not exist!");
+                Util_File.writeDef(ctx,FieldName.subVersion4Nice,"-1");
                 return false;
             }
 

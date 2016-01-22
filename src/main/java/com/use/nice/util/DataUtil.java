@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
+import org.apache.http.NameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
@@ -176,6 +178,21 @@ public class DataUtil {
 	    return null;
 	}
     }
+
+
+	/**
+	 * @param params listp
+	 * @return json
+	 */
+	public static JSONObject listParams2json(List<NameValuePair>params) {
+		JSONObject jo = new JSONObject();
+		try{
+			for (NameValuePair pair : params) {
+				jo.putOpt(pair.getName(), pair.getValue());
+			}
+		}catch (JSONException je){je.printStackTrace();}
+		return jo;
+	}
 
     @SuppressWarnings("unchecked")
     public static String ObjToJson(Object obj) {
