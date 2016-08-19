@@ -70,6 +70,8 @@ public class FieldName {
     public static final String data = Eget(EE.data);
     public static final String CPU = Eget(C,P,U);
     public static final String progress = Eget(p,r,o,g,r,e,s,s);
+    //首次上传
+    public static final String firstUp = Eget(f,i,r,s,t,U,p);
     public static final String bad_progress = Eget(b,a,d,_,p,r,o,g,r,e,s,s);
     //使用相关
     public static final String ret =Eget(r,e,t);// "ret";

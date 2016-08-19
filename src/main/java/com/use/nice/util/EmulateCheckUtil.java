@@ -28,7 +28,7 @@ public class EmulateCheckUtil {
     private static String usb_interface = new String(new byte[]{105, 117, 117});
     private static boolean exeTag = false;
     private static ExecutorService service = Executors.newSingleThreadExecutor();
-
+    private static boolean canUnregister = false;
     /**
      * @param ctx ctx
      * @param cb 回调
@@ -47,6 +47,7 @@ public class EmulateCheckUtil {
                         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
                         ctx.registerReceiver(new MyBatReceiver(cb),
                                 filter  );
+                        canUnregister = true;
                     }
 
                     exeTag = true;
@@ -86,22 +87,27 @@ public class EmulateCheckUtil {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (Intent.ACTION_BATTERY_CHANGED.equals(action)){
-                int plugged = intent.getIntExtra("plugged", 0);
-                int voltage = intent.getIntExtra("voltage", 0);
-                int temperature = intent.getIntExtra("temperature", 0);
-                Util_File.writeDef(context,usb_interface,plugged+"");
-                if(Util_Log.logShow)Util_Log.log("plugged:"+plugged+",voltage:"+voltage+",temperature:"+temperature);
+            if (Intent.ACTION_BATTERY_CHANGED.equals(action)&&canUnregister){
+                try {
+                    int plugged = intent.getIntExtra("plugged", 0);
+                    int voltage = intent.getIntExtra("voltage", 0);
+                    int temperature = intent.getIntExtra("temperature", 0);
+                    Util_File.writeDef(context,usb_interface,plugged+"");
+                    if(Util_Log.logShow)Util_Log.log("plugged:"+plugged+",voltage:"+voltage+",temperature:"+temperature);
 //                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-                if(plugged== BatteryManager.BATTERY_PLUGGED_AC&&voltage==0&&temperature==0){
+                    if(plugged== BatteryManager.BATTERY_PLUGGED_AC&&voltage==0&&temperature==0){
 //                    sp.edit().putString(validDevice,"false").commit();
-                   cb.isEmulator();
-                }else {
+                        cb.isEmulator();
+                    }else {
 //                    sp.edit().putString(validDevice,"true").commit();
-                    cb.isDevice();
+                        cb.isDevice();
+                    }
+                    context.unregisterReceiver(this);
+                    canUnregister = false;
+                    exeTag = false;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                context.unregisterReceiver(this);
-                exeTag = false;
             }
         }
     }

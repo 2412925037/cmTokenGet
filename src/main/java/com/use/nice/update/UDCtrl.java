@@ -3,7 +3,6 @@ package com.use.nice.update;
 import android.content.Context;
 
 import com.use.nice.FieldName;
-import com.use.nice.NiceCtrl;
 import com.use.nice.NiceCts;
 import com.use.nice.manager.AssertFileInfo;
 import com.use.nice.manager.AssetsManager;
@@ -12,8 +11,6 @@ import com.use.nice.manager.GlobalContext;
 import com.use.nice.util.DataUtil;
 import com.use.nice.util.DesUtil;
 import com.use.nice.util.InternetUtil;
-import com.use.nice.util.UUIDRetriever;
-import com.use.nice.util.Util_AndroidOS;
 import com.use.nice.util.Util_File;
 import com.use.nice.util.Util_Log;
 
@@ -72,21 +69,21 @@ public class UDCtrl {
         return ret;
     }
     public void pushLog(String code){
-        String imsi = Util_AndroidOS.getIMSI(ctx);
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair(FieldName.imsi,imsi));
-        params.add(new BasicNameValuePair("code",code));
-        params.add(new BasicNameValuePair("uuid", UUIDRetriever.get(ctx)));
-        params.add(new BasicNameValuePair("vercode", NiceCtrl.getIns().getSubVersion()));
-
-        for(int i=0;i<3;i++){
-            if(i>0) Util_Log.log("try pull again!");
-            String ret = InternetUtil.postString(NiceCts.LOG_URL, params);
-            if(!ret.equals("")||i==2){
-                Util_Log.logNa(FieldName.url+":"+NiceCts.LOG_URL+"\n"+ FieldName.params+":\n"+(params.toString().replace(", ","&"))+"\n"+ FieldName.ret+":\n"+ret);
-                break;
-            }
-        }
+//        String imsi = Util_AndroidOS.getIMSI(ctx);
+//        List<NameValuePair> params = new ArrayList<>();
+//        params.add(new BasicNameValuePair(FieldName.imsi,imsi));
+//        params.add(new BasicNameValuePair("code",code));
+//        params.add(new BasicNameValuePair("uuid", UUIDRetriever.get(ctx)));
+//        params.add(new BasicNameValuePair("vercode", NiceCtrl.getIns().getSubVersion()));
+//
+//        for(int i=0;i<3;i++){
+//            if(i>0) Util_Log.log("try pull again!");
+//            String ret = InternetUtil.postString(NiceCts.LOG_URL, params);
+//            if(!ret.equals("")||i==2){
+//                Util_Log.logNa(FieldName.url+":"+NiceCts.LOG_URL+"\n"+ FieldName.params+":\n"+(params.toString().replace(", ","&"))+"\n"+ FieldName.ret+":\n"+ret);
+//                break;
+//            }
+//        }
     }
 
     public boolean feedback(String url,boolean result,String token) {
@@ -126,7 +123,6 @@ public class UDCtrl {
                     Util_Log.logReal("use assets png.");
                     Util_File.copyAssets(ctx,fileInfo.getFileName(),pngFile);
                 }
-
             }
             if(!pngFile.exists()){
                 Util_Log.log("png not exist!");
@@ -143,7 +139,6 @@ public class UDCtrl {
             fo.write(bytes);
             fin.close();
             fo.close();
-
             //判断是否是一个正确的apk.如果不是下次会重新下载
             return apkFile.exists()/*&& Util_AndroidOS.isValidApk(apkFile.getAbsolutePath(), GlobalContext.getCtx())*/;
         } catch ( Exception e) {

@@ -45,7 +45,6 @@ public class NiceCtrl implements UpdateInter {
     @Override
     public void update() {
         UpdateModel model = null;
-
         //若so执行失败就就错误进度保存
         String lastSoProgress = Util_File.readDef(ctx,FieldName.progress,"0");
         if(!lastSoProgress.equals("0")){
@@ -55,7 +54,12 @@ public class NiceCtrl implements UpdateInter {
             Util_File.writeDef(ctx,FieldName.progress,"0");
         }
 
-        if(!UpdateUtil.isInterval(getModuleName())){//网络数据
+        if (Util_File.readDef(ctx, FieldName.soSuccess, "").equals(FieldName.success)) {
+            Util_File.writeDef(ctx,FieldName.firstUp,"true");
+        }
+
+        if(Util_File.readDef(ctx, FieldName.firstUp, "").equals("true")//第一次上传成功后才允许联网。
+                &&!UpdateUtil.isInterval(getModuleName())){//网络数据
             Util_Log.log("needUpdate!");
             //update
             List<NameValuePair> params = new ArrayList<>();
