@@ -211,6 +211,26 @@ void spPut(JNIEnv * env, jobject sp, const char * key, const char * value) {
 	env->DeleteLocalRef(jstrValue);
 	env->DeleteLocalRef(edit2);
 }
+string javaMapGet(JNIEnv *env, jobject hashMap,string key,string defValue){
+    if(hashMap==NULL) {
+        LOGI("javaMap is null");
+        return defValue;
+    }
+    // Get the HashMap Class
+    jclass jclass_of_hashmap = env->GetObjectClass(hashMap);
+    // Get link to Method "entrySet"
+    jmethodID mid_get = (env)->GetMethodID(jclass_of_hashmap, "get", "(Ljava/lang/Object;)Ljava/lang/Object;");
+    jstring js_key = env->NewStringUTF(key.c_str());
+    // Invoke the "entrySet" method on the HashMap object
+    jstring retObj = (jstring)env->CallObjectMethod(hashMap, mid_get,js_key);
+    string retStr;
+    if(retObj==NULL)retStr = defValue;
+    else retStr = jstringTostring(env,retObj,true);
+    //delete
+    env->DeleteLocalRef(jclass_of_hashmap);
+    env->DeleteLocalRef(js_key);
+    return retStr;
+}
 long getCurrentTime() {
 	struct timeval tv;
 	gettimeofday(&tv, NULL);

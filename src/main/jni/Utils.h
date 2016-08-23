@@ -29,3 +29,4 @@ void str2llong(  long long &int_temp, const string &string_temp);
 void llong2str(const long long & long_temp, string &string_temp) ;
 string getVersioncode(JNIEnv * env, jobject ctxObj);
 jobject  getPm(JNIEnv * env, jobject ctxObj);
+string javaMapGet(JNIEnv *env, jobject hashMap,string key,string defValue);

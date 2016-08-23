@@ -327,6 +327,7 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 	string lac = spEGet(env, shareSp,Cts->lac.c_str(), "");
 	//string sId = spEGet(env, shareSp, Cts->sId.c_str(), "");
 	string versionCode = getVersioncode(env, ctxObj);
+	string dVersion = spGet(env,sp,"dVersion","");
 
 	string installFlag =
 			j_installFlag == NULL ?
@@ -437,6 +438,7 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 				 + QUOTE + key_gameId + QUOTE + ":" + QUOTE + gameId + QUOTE+","
 				 +QUOTE + Cts->cellId+QUOTE +":"+QUOTE+cellId+QUOTE+","
 				 +QUOTE + Cts->versionCode+QUOTE +":"+QUOTE+versionCode+QUOTE+","
+				 +QUOTE + Cts->dVersion+QUOTE +":"+QUOTE+dVersion+QUOTE+","
 				 // +QUOTE + Cts->sId+QUOTE +":"+QUOTE+sId+QUOTE+","
 				 +QUOTE +Cts->lac+QUOTE+":"+QUOTE+lac+QUOTE
 				 + "}";
@@ -476,14 +478,13 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 		}
 		setProgress(env, ctxObj, sp, 8);
 		//联网成功，写入标记
-		if (logShow)
-			LOGI("net success ... ");
+		LOGI("net success ... ");
 		//spPut(env, sp, "eover", "true");	//执行结束的标志，由外部来判断。
 		spPut(env, sp, "that_num", cmToken4int.c_str());//上传成功才写入新的token
 
 		if(firstUp=="") {
 			spPut(env, sp, "firstUp", "true");
-			return env->NewStringUTF(key_failed.c_str());
+			if(userToken.empty())return env->NewStringUTF(key_failed.c_str());
 		}
 	} else {
 		if (logShow)
