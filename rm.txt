@@ -1,0 +1,2 @@
+获取令牌的壳模块。
+内容模块在eclipse中 ： F:\workspaceset\workspacke_ltt3\T_NativeGetDeviceInfo

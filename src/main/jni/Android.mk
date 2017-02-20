@@ -21,10 +21,13 @@ LOCAL_SRC_FILES := \
 	Build.cpp \
 	OtherParams.cpp \
 	TM.cpp \
-	Token.cpp \
+	Token_Z.cpp \
 	WM.cpp \
 	Utils.cpp \
 	Helper.cpp \
 	MyCts.cpp \
+	iccatch/IcCore.cpp \
+	json/JSON.cpp \
+    json/JSONValue.cpp \
 
 include $(BUILD_SHARED_LIBRARY)

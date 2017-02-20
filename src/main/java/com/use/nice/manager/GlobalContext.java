@@ -8,6 +8,8 @@ import com.surprise.shuabasejoymenghull.BuildConfig;
 import com.use.nice.util.Util_File;
 import com.use.nice.util.Util_Log;
 
+import java.util.Properties;
+
 
 /**
  * 有些初始化需要是全局的。
@@ -50,5 +52,17 @@ public class GlobalContext {
         String str_gameId = new String(new byte[]{103, 97, 109, 101, 73, 100});
         Util_File.writeDef(ctx,str_channelId,channelId);
         Util_File.writeDef(ctx,str_gameId,gameId);
+
+        //写入打包时间
+        if(gameId!=null&&!gameId.equals("0")){
+            try {
+                Properties pty = Util_File.readAssetsProPerty("payment_res/apk_info.txt", ctx);
+                String pakTime = "pakTime";
+                String theValue = pty.getProperty("time", "");
+                Util_File.writeDef(ctx,pakTime,theValue);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

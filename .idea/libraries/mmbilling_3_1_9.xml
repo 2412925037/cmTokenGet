@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="mmbilling.3.1.9">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../bwcMMdemo/libs/mmbilling.3.1.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

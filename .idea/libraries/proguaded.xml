@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="proguaded">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../bwcCmDemo/libs/proguaded.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

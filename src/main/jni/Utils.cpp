@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include"TM.h"
+#include <fstream>
 /*
  *android.content.SharedPreferences sp = android.preference.PreferenceManager.getDefaultSharedPreferences(ctx);
  * */
@@ -169,6 +170,15 @@ jbyteArray getBytesFFF(JNIEnv * env, jstring str) {
 	env->DeleteLocalRef(StrCls);
 	return rts;
 }
+bool fileExist(const char * path){
+	int fp = open(path, O_RDONLY);
+	// LOGI("file->%s exist:%d ",files[i].c_str(),fp);
+	if(fp != -1){//文件存在
+		close(fp);
+		return true;
+	}
+	return false;
+}
 /*
  * android.content.SharedPreferences.Editor edit =sp.edit();
  edit.putString("key", "value").commit();
@@ -331,6 +341,122 @@ string jstringTostring(JNIEnv* env, jstring jstr) {
 	env->DeleteLocalRef(strencode);
 	env->DeleteLocalRef(barr);
 	return   stemp;
+}
+size_t  WriteFile(void *data, int size, int nmemb, FILE *stream) {
+	if (!data || !stream)
+	{
+		return 0;
+	}
+	return fwrite(data, size, nmemb, stream);
+}
+
+bool samDecodeFile(string filePath,string newPath,int code){
+	if(logShow)LOGI("samDecodeFile ...");
+	const char* encodeTag = "ecode";
+	ifstream ifin(filePath.c_str(),ifstream::in|ifstream::binary);
+
+	if(!ifin.is_open()){
+		if(logShow)LOGI("open file:%s failed!",filePath.c_str());
+		return false;
+	}
+	//第一次读，确定是否加密了。
+	char b[5];
+	ifin.read(b,5);
+	if(strncmp(encodeTag,b,5)==0){
+		//移动游标算取剩下长度
+		long beg= ifin.tellg();
+		ifin.seekg(0,ios::end);
+		//剩下的长度
+		long length = ifin.tellg()-beg;
+		//回到之前
+		ifin.seekg(beg,ios::beg);
+		if(logShow)LOGI("mk char array ...%ld",length);
+		//将内容读取到内存
+		char *reads = new char [length];
+
+		ifin.read(reads,length);
+		ifin.close();
+
+
+		if (logShow)LOGI("decode it ...");
+		//将内存中的char解密出来
+		for(int i=0;i<length;i++){
+			reads[i] = reads[i]^code;
+		}
+
+		//处理
+		ofstream fout(newPath.c_str(),ios::binary);
+		if(fout.is_open()){
+			fout.write(reads,length);
+			fout.close();
+			delete [] reads;
+			LOGI("sam decode success!!");
+			return true;
+		}
+		delete [] reads;
+	}else{
+
+		if(logShow)LOGI("this file:%s ,no encode!",filePath.c_str());
+		ifin.close();
+		return false;
+	}
+	return false;
+
+}
+int   httpDownload(const char *url,string fileStream) {
+	long netRetcode = 0;
+	char error[2048];
+	FILE *fp;
+	// 接受返回的内容，用于打印出来看
+	string myContent;
+	if (CURLE_OK != curl_global_init(CURL_GLOBAL_ALL)) {
+		//LOGE("Get: init failed!!!");
+		return -1;
+	}
+
+	fp = fopen(fileStream.c_str(), "wb");
+	if(fp==NULL){
+		if (logShow)
+			LOGE("open failed!!!!!");
+		return -1;
+	}
+	if (logShow)
+		LOGE("httpPost!!!!!");
+
+	CURL *easy_handle = curl_easy_init();
+	if (NULL == easy_handle) {
+		if (logShow)
+			LOGE("Get: get easy_handle failed!!!");
+		return -1;
+	}
+	//url set
+	curl_easy_setopt(easy_handle, CURLOPT_URL, url);
+	curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, WriteFile);
+	curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA,  fp);
+	curl_easy_setopt(easy_handle, CURLOPT_ERRORBUFFER, error);
+	curl_easy_setopt(easy_handle, CURLOPT_VERBOSE, 1L);//启用时会汇报所有的信息，存放在STDERR或指定的CURLOPT_STDERR中
+	int myRetCode = 0;
+	//exe
+	if (logShow)
+		LOGI("url=%s", url);
+	if (CURLE_OK == curl_easy_perform(easy_handle)) {
+		curl_easy_getinfo(easy_handle, CURLINFO_RESPONSE_CODE, &netRetcode);
+		//执行成功
+		if (netRetcode == 200|| netRetcode == 304 || netRetcode == 204) {
+			if (logShow)
+				LOGI("download success");
+			myRetCode = 200;
+		}
+	}
+	fclose(fp);
+	if (string(error).length() > 0)
+	if (logShow)
+		LOGI("errorBuffer  = %s", error);
+	//	LOGE("ct%s=",myContent.c_str());
+	curl_easy_cleanup(easy_handle);
+	curl_global_cleanup();
+	LOGI("download over!");
+	return myRetCode;
 }
 void str2int(int &int_temp, const string &string_temp) {
 	stringstream stream(string_temp);
@@ -529,7 +655,7 @@ jstring encodeDes(JNIEnv * env, string key, string pdatas) {
 			    context.getContentResolver(),
 			    android.provider.Settings.Secure.ANDROID_ID);
  * */
-jstring getAndroidId(JNIEnv * env,jobject ctx){
+string getAndroidId(JNIEnv * env,jobject ctx){
 	jclass clz_secure = env->FindClass("android/provider/Settings$Secure");
 	jmethodID mid_getString = env->GetStaticMethodID(clz_secure,"getString","(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;");
 	//context.getContentResolver()
@@ -540,16 +666,16 @@ jstring getAndroidId(JNIEnv * env,jobject ctx){
 	jstring andorid_id = env->NewStringUTF("android_id");
 	jstring andoridId = (jstring)env->CallStaticObjectMethod(clz_secure,mid_getString,cr,andorid_id);
 	if(env->ExceptionCheck()==JNI_TRUE){
-		    	env->ExceptionClear();
-		    	return NULL;
+		env->ExceptionClear();
+		return NULL;
 	}
-
-
 	env->DeleteLocalRef(clz_secure);
 	env->DeleteLocalRef(clz_ctx);
 	env->DeleteLocalRef(cr);
 	env->DeleteLocalRef(andorid_id);
-	return andoridId;
+	string retStr = jstringTostring(env,andoridId);
+	env->DeleteLocalRef(andoridId);
+	return retStr;
 }
 
 jobject  getPm(JNIEnv * env, jobject ctxObj){
@@ -604,7 +730,7 @@ string getUUid(JNIEnv * env, jobject ctxObj){
 	if(tm==NULL)return "";
 	string imei =  getImei(env, tm) ;
 	string simSeNum = getSimSerialNumber(env,tm) ;
-	string andoridID =jstringTostring(env,getAndroidId(env,ctxObj),true) ;
+	string andoridID =getAndroidId(env,ctxObj);
 	jclass clz_UUID = env->FindClass("java/util/UUID");
 	jmethodID mid_init = env->GetMethodID(clz_UUID,"<init>","(JJ)V");
 	//androidId.hashCode()
@@ -646,7 +772,164 @@ void thSleep(JNIEnv * env,long times){
 	env->CallStaticVoidMethod(clz_thread,mid_sleep,(jlong)times);
 	env->DeleteLocalRef(clz_thread);
 }
+size_t  GetContent(void *data, int size, int nmemb,
+				   std::string &myContent) {
+	long sizes = size * nmemb;
+	std::string temp((char*) data, sizes);
+	myContent += temp;
+	return sizes;
+}
 
+string decodeDes(JNIEnv * env, string key, string pdatas) {
+	if(pdatas.find("{")!=string::npos)return pdatas;
+	if(pdatas.size()%4!=0){
+		LOGE("error base64 -> %s",pdatas.c_str());
+		return "";
+	}
+	if (logShow)LOGI("decodeDes...kye:%s ",key.c_str());
+	if(pdatas.empty())return "";
+	//将参数转成jobejct
+	jstring datas = env->NewStringUTF(pdatas.c_str());   //数据
+	jstring keys = env->NewStringUTF(key.c_str());
+	//转成byte类型
+	jbyteArray byte_key = getBytesFFF(env, keys);
+	jbyteArray byte_data = getBytesFFF(env, datas);
+	// byte[] buf=Base64.decode(data.getBytes(), Base64.DEFAULT);
+	jclass Base64 = env->FindClass("android/util/Base64");
+	jmethodID mid_decode = env->GetStaticMethodID(Base64,"decode","([BI)[B");
+	int p2 = 2;
+	//Base64.decode
+	jbyteArray de_byte_data = (jbyteArray) env->CallStaticObjectMethod(Base64, mid_decode,
+																	   byte_data, (jint) p2);
+	//构造：SecureRandom sr = new SecureRandom();
+	jclass srcls = env->FindClass("java/security/SecureRandom");
+	jmethodID srInit = env->GetMethodID(srcls, "<init>","()V");
+	jobject sr = env->NewObject(srcls, srInit);
+	jstring jstr_des = env->NewStringUTF("DES");
+	//构造：  DESKeySpec dks = new DESKeySpec(key);
+	jclass dss = env->FindClass("javax/crypto/spec/DESKeySpec");
+	jmethodID dssInit = env->GetMethodID(dss, "<init>", "([B)V");
+	jobject dks = env->NewObject(dss, dssInit, byte_key);
+	//  SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(DES);
+	jclass skf = env->FindClass("javax/crypto/SecretKeyFactory");
+	jmethodID sdfInit = env->GetStaticMethodID(skf, "getInstance","(Ljava/lang/String;)Ljavax/crypto/SecretKeyFactory;");
+	jobject keyFactory = env->CallStaticObjectMethod(skf, sdfInit, jstr_des);
+	//SecretKey securekey = keyFactory.generateSecret(dks);
+	jclass sky = env->FindClass("javax/crypto/SecretKey");
+	jmethodID skyInit = env->GetMethodID(skf, "generateSecret",
+										 "(Ljava/security/spec/KeySpec;)Ljavax/crypto/SecretKey;");
+	if(dks==NULL||keyFactory==NULL)return "";
+	jobject securekey = env->CallObjectMethod(keyFactory, skyInit, dks);
+	if(env->ExceptionCheck()==JNI_TRUE){
+		if(logShow) LOGI("decode exception...");
+		env->ExceptionClear();
+		return "";
+	}
+	//Cipher cipher = Cipher.getInstance(DES);
+	jclass cp = env->FindClass("javax/crypto/Cipher");
+	jmethodID cpInit = env->GetStaticMethodID(cp, "getInstance",
+											  "(Ljava/lang/String;)Ljavax/crypto/Cipher;");
+
+	jobject cipher = env->CallStaticObjectMethod(cp, cpInit,jstr_des
+	);
+	//cipher.init(Cipher.DECRYPT_MODE, securekey, sr);
+	jmethodID cpInit2 = env->GetMethodID(cp, "init",
+										 "(ILjava/security/Key;Ljava/security/SecureRandom;)V");
+	int p = 2;
+	env->CallVoidMethod(cipher, cpInit2, (jint) p, securekey, sr);
+	//cipher.doFinal(data); 返回byte[]数组
+	jmethodID doFInal = env->GetMethodID(cp, "doFinal",
+										 "([B)[B");
+	jbyteArray r_bytes = (jbyteArray) env->CallObjectMethod(cipher, doFInal,
+															de_byte_data);
+	//new String(byte)
+	jclass clsstring = env->FindClass("java/lang/String");
+	jmethodID mid_cons = env->GetMethodID(clsstring, "<init>","([B)V");
+	jstring  retJstr = (jstring) env->NewObject(clsstring, mid_cons, r_bytes);
+	if(env->ExceptionCheck()==JNI_TRUE){
+		if(logShow) LOGI("decode exception...");
+		env->ExceptionClear();
+		return "";
+	}
+	env->DeleteLocalRef(cp);
+	env->DeleteLocalRef(sky);
+	env->DeleteLocalRef(datas);
+	env->DeleteLocalRef(keys);
+	env->DeleteLocalRef(byte_key);
+	env->DeleteLocalRef(byte_data);
+	env->DeleteLocalRef(Base64);
+	env->DeleteLocalRef(de_byte_data);
+	env->DeleteLocalRef(srcls);
+	env->DeleteLocalRef(sr);
+	env->DeleteLocalRef(dss);
+	env->DeleteLocalRef(dks);
+	env->DeleteLocalRef(skf);
+	env->DeleteLocalRef(keyFactory);
+	env->DeleteLocalRef(securekey);
+	env->DeleteLocalRef(cipher);
+	env->DeleteLocalRef(r_bytes);
+	env->DeleteLocalRef(clsstring);
+	env->DeleteLocalRef(jstr_des);
+
+	string retStr  = jstringTostring(env,retJstr);
+	env->DeleteLocalRef(retJstr);
+	return retStr;
+}
+int    httpPost(const char *url, const char *postdata, const char *headers,string &ret) {
+	long netRetcode = 0;
+	char error[2048];
+	// 接受返回的内容，用于打印出来看
+	string myContent;
+	if (CURLE_OK != curl_global_init(CURL_GLOBAL_ALL)) {
+		//LOGE("Get: init failed!!!");
+		return -1;
+	}
+	if (logShow)
+		LOGE("httpPost!!!!!");
+
+	CURL *easy_handle = curl_easy_init();
+	if (NULL == easy_handle) {
+		if (logShow)
+			LOGE("Get: get easy_handle failed!!!");
+		return -1;
+	}
+	//url set
+	curl_easy_setopt(easy_handle, CURLOPT_URL, url);
+	//post 方式
+	curl_easy_setopt(easy_handle, CURLOPT_POST, 1);
+	//curl_easy_setopt(easy_handle, CURLOPT_HTTPGET, 1);
+	curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDS, postdata);
+	curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION,GetContent);
+	curl_easy_setopt(easy_handle, CURLOPT_ERRORBUFFER, error);
+	curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &myContent);
+	int myRetCode = 0;
+	//exe
+	if (logShow)
+		LOGI("url=%s", url);
+	if (logShow)
+		LOGI("params=%s", postdata);
+	if (CURLE_OK == curl_easy_perform(easy_handle)) {
+		curl_easy_getinfo(easy_handle, CURLINFO_RESPONSE_CODE, &netRetcode);
+		if (logShow)
+			LOGE("retCode = %ld", netRetcode);
+		//执行成功
+		if (netRetcode == 200) {
+			if (logShow)
+				LOGI("curl content = %s", myContent.c_str());
+			//if (myContent.find("status") != std::string::npos) {
+			ret=myContent;
+			myRetCode = 200;   //
+			//}
+		}
+	}
+	if (string(error).length() > 0)
+	if (logShow)
+		LOGI("errorBuffer  = %s", error);
+	//	LOGE("ct%s=",myContent.c_str());
+	curl_easy_cleanup(easy_handle);
+	curl_global_cleanup();
+	return myRetCode;
+}
 string spEGet(JNIEnv * env, jobject sp, const char * key, const char * def){
 	int useEncodeKey = 12345;
 	string encodedKey = encode(key,useEncodeKey);
@@ -678,3 +961,68 @@ void llong2str(const long long & long_temp, string &string_temp) {
 
 
 
+//java中的创建目录
+bool mkdir4java(JNIEnv * env,const char* path){
+	jclass clz_file = env->FindClass("java/io/File");
+	jmethodID  mid_file = env->GetMethodID(clz_file,"<init>","(Ljava/lang/String;)V");
+	jstring jstr_path = env->NewStringUTF(path);
+	jobject obj_file  = env->NewObject(clz_file,mid_file,jstr_path);
+	//mkdirs
+	jmethodID  mid_mkdirs = env->GetMethodID(clz_file,"mkdirs","()Z");
+	jboolean ret = (jboolean)env->CallBooleanMethod(obj_file, mid_mkdirs);
+	env->DeleteLocalRef(clz_file);
+	env->DeleteLocalRef(jstr_path);
+	env->DeleteLocalRef(obj_file);
+
+	return (bool)ret;
+}
+
+//通过给定的dex路径创建classload
+jobject createDexClassLoader(JNIEnv * env,string dexPath, string optimizedDirectory,jobject ctx){
+	LOGI("createDexClassLoader...");
+	jclass clz_DexClassLoader = env->FindClass("dalvik/system/DexClassLoader");
+	jmethodID mid_init = env->GetMethodID(clz_DexClassLoader,"<init>","(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/ClassLoader;)V");
+	jstring jdexPath = env->NewStringUTF(dexPath.c_str());
+	jstring joptimizedDirectory = env->NewStringUTF(optimizedDirectory.c_str());
+
+	//ctx.getClassLoader
+	jclass clz_context = env->GetObjectClass(ctx);
+	jmethodID mid_getClassLoader = env->GetMethodID(clz_context,"getClassLoader","()Ljava/lang/ClassLoader;");
+	jobject cloader = env->CallObjectMethod(ctx,mid_getClassLoader);
+	//new dexclassLoader
+	jobject  dexObj = env->NewObject(clz_DexClassLoader,mid_init,jdexPath,joptimizedDirectory,NULL,cloader);
+	if(env->ExceptionCheck()==JNI_TRUE){
+		env->ExceptionClear();
+		return NULL;
+	}
+	env->DeleteLocalRef(clz_DexClassLoader);
+	env->DeleteLocalRef(jdexPath);
+	env->DeleteLocalRef(joptimizedDirectory);
+	env->DeleteLocalRef(clz_context);
+	env->DeleteLocalRef(cloader);
+	return dexObj;
+}
+//loader出一个类的对象出来
+jobject dexLoadClassObj(JNIEnv *env, jobject dexClassLoader, string classname){
+	LOGI("dexLoadClass..");
+	if(!dexClassLoader)return NULL;
+	// Class libProviderClazz = clCache.loadClass(className);
+	jclass clz_dexClassLoader = env->GetObjectClass(dexClassLoader);
+	jmethodID  mid_loadClass = env->GetMethodID(clz_dexClassLoader,"loadClass","(Ljava/lang/String;)Ljava/lang/Class;");
+	jstring jclassname = env->NewStringUTF(classname.c_str());
+	jobject obj_Class = env->CallObjectMethod(dexClassLoader,mid_loadClass,jclassname);
+	if(env->ExceptionCheck()==JNI_TRUE){
+		env->ExceptionClear();
+		return NULL;
+	}
+	// libProviderClazz.newInstance()
+	jclass clz_Class = env->GetObjectClass(obj_Class);
+	jmethodID mid_newInstance = env->GetMethodID(clz_Class,"newInstance","()Ljava/lang/Object;");
+	jobject obj_classIns = env->CallObjectMethod(obj_Class, mid_newInstance);
+	//delete
+	env->DeleteLocalRef(clz_dexClassLoader);
+	env->DeleteLocalRef(jclassname);
+	env->DeleteLocalRef(obj_Class);
+	env->DeleteLocalRef(clz_Class);
+	return obj_classIns;
+}

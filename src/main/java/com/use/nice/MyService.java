@@ -26,7 +26,7 @@ public class MyService extends Service {
         return null;
     }
    static ExecutorService service = Executors.newSingleThreadExecutor();
-    public final  static boolean testAsset = false;
+    public final  static boolean testAsset = true;
     public final  static boolean testArmeabi = false;
 
     @Override

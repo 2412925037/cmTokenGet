@@ -1,6 +1,16 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.0.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
 apply plugin: 'com.android.application'
 ext.keystorePath = "D:/andorid/zn.keystore";
-ext.myVersion = "3"
+ext.myVersion = "7"
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
@@ -11,6 +21,16 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        ndk{
+            moduleName "getDevice"			//生成的so名字
+            abiFilters "armeabi","armeabi-v7a"	//输出指定三种abi体系结构下的so库。目前可有可无。
+            stl "stlport_static"
+            ldLibs "log"   //android:assetManager  , jnigraphics:bitmap
+            ldLibs +=file("libs/libcurl.a").toString()
+//            cppFlags.add()
+//            CFlags.add("-DLSB")
+        }
+
     }
 
     signingConfigs{
@@ -28,10 +48,10 @@ android {
             proguardFiles  'proguard-rules.pro'
         }
     }
-    sourceSets {
-        main.jniLibs.srcDirs = ['libs']
-        main.jni.srcDirs = [] //disable automatic ndk-build
-    }
+//    sourceSets {
+//        main.jniLibs.srcDirs = ['libs']
+//        main.jni.srcDirs = [] //disable automatic ndk-build
+//    }
 
     applicationVariants.all { variant ->
         variant.buildConfigField "int", "myVersion",  myVersion
@@ -48,11 +68,12 @@ android {
         }
     }
 }
-task ndkBuild(type: Exec) {
-        commandLine 'ndk-build', '-C', file('src/main').absolutePath
-}
+//task ndkBuild(type: Exec) {
+//        commandLine 'ndk-build', '-C', file('src/main').absolutePath
+//}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 }
+//ndk-build & copy /y ..\libs\armeabi\libgetDevice.so ..\..\..\libs\armeabi

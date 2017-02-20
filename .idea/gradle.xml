@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="1.7" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/.." />
+            <option value="$PROJECT_DIR$/../app" />
+            <option value="$PROJECT_DIR$/../bwcCmDemo" />
+            <option value="$PROJECT_DIR$/../bwcMMdemo" />
+            <option value="$PROJECT_DIR$/../bwcsohull" />
+            <option value="$PROJECT_DIR$/../bwctestsubso" />
+            <option value="$PROJECT_DIR$/../emptymodule" />
+            <option value="$PROJECT_DIR$/../fixedModule" />
+            <option value="$PROJECT_DIR$/../modi_cm_smali" />
+            <option value="$PROJECT_DIR$/../modi_cm_smali_inter" />
+            <option value="$PROJECT_DIR$/../shuaBaseJoymeng" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/../testyummyctr" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

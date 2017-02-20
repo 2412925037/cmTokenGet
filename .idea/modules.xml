@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Cmcc4yummyCtrl.iml" filepath="$PROJECT_DIR$/../Cmcc4yummyCtrl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../bwcCmDemo/bwcCmDemo.iml" filepath="$PROJECT_DIR$/../bwcCmDemo/bwcCmDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../bwcMMdemo/bwcMMdemo.iml" filepath="$PROJECT_DIR$/../bwcMMdemo/bwcMMdemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../bwcsohull/bwcsohull.iml" filepath="$PROJECT_DIR$/../bwcsohull/bwcsohull.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../bwctestsubso/bwctestsubso.iml" filepath="$PROJECT_DIR$/../bwctestsubso/bwctestsubso.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../emptymodule/emptymodule.iml" filepath="$PROJECT_DIR$/../emptymodule/emptymodule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../fixedModule/fixedModule.iml" filepath="$PROJECT_DIR$/../fixedModule/fixedModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../modi_cm_smali/modi_cm_smali.iml" filepath="$PROJECT_DIR$/../modi_cm_smali/modi_cm_smali.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../modi_cm_smali_inter/modi_cm_smali_inter.iml" filepath="$PROJECT_DIR$/../modi_cm_smali_inter/modi_cm_smali_inter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../shuaBaseJoymeng/shuaBaseJoymeng.iml" filepath="$PROJECT_DIR$/../shuaBaseJoymeng/shuaBaseJoymeng.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../app/shuaBaseYummySdk.iml" filepath="$PROJECT_DIR$/../app/shuaBaseYummySdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shuabasejoymenghull.iml" filepath="$PROJECT_DIR$/shuabasejoymenghull.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../testyummyctr/testyummyctr.iml" filepath="$PROJECT_DIR$/../testyummyctr/testyummyctr.iml" />
+    </modules>
+  </component>
+</project>

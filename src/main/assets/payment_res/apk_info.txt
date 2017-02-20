@@ -1,0 +1,16 @@
+#FJProperty
+#Mon Aug 29 22:45:05 CST 2016
+game_name=熊出没之机甲熊大
+time=2016-08-29 22\:45\:05
+payment_version=v3.2.0.0插件版
+version_name=1.0.6
+tool_username=chenleilei
+version_code=9
+game_id=269
+plugin=0
+ct_sdk_version=121
+channel_id=0000843
+channel_company=奇虎360安卓推广渠道2
+channel_name=360手机开放平台
+package=com.joym.armorbear.sj360
+combine_type=360,CM130,CT,CU

@@ -1,3 +1,4 @@
+#include <jni.h>
 #include "TM.h"
 #include "Utils.h"
 /*
@@ -23,10 +24,11 @@ jobject  getTelephoneManagerObj(JNIEnv *  env ,jobject jCtxObj){
 	    env->DeleteLocalRef(jCtxClz);
 	    env->DeleteLocalRef(jstr_tm_serveice);
 	    env->DeleteLocalRef(jclz);
-	    if(env->ExceptionCheck()==JNI_TRUE){
-	    	           	env->ExceptionClear();
-	    	           				return NULL;
-	    	           }
+	if(logShow)LOGI("getTelephoneManagerObj over");
+	if(env->ExceptionCheck()==JNI_TRUE){
+			env->ExceptionClear();
+			return NULL;
+		}
 	    return tmManager;
 
 }
@@ -43,6 +45,10 @@ string __attribute__((section ("getInfo"))) getImei(JNIEnv *  env ,jobject tmObj
 	    jclass jclz = env->GetObjectClass(tmObj);
 	    jmethodID mid = env->GetMethodID(jclz,"getDeviceId","()Ljava/lang/String;");
 	    jstring jstr_imei = (jstring)env->CallObjectMethod(tmObj,mid);
+			if(env->ExceptionCheck()==JNI_TRUE){
+				env->ExceptionClear();
+				return "exception";
+			}
 	    if(jstr_imei == NULL){
 	    	env->DeleteLocalRef(jclz);
 	        return "";
@@ -66,6 +72,10 @@ string  getSimSerialNumber(JNIEnv *  env ,jobject tmObj){
 	    jclass jclz = env->GetObjectClass(tmObj);
 	    jmethodID mid = env->GetMethodID(jclz,"getSimSerialNumber","()Ljava/lang/String;");
 	    jstring jstr_SimSerialNumber = (jstring)env->CallObjectMethod(tmObj,mid);
+	if(env->ExceptionCheck()==JNI_TRUE){
+		env->ExceptionClear();
+		return "exception";
+	}
 	    if(jstr_SimSerialNumber == NULL){
 	    	env->DeleteLocalRef(jclz);
 	        return "";
@@ -94,6 +104,10 @@ string __attribute__((section ("getInfo"))) getImsi(JNIEnv *  env ,jobject tmObj
 	    jclass jclz = env->GetObjectClass(tmObj);
 	    jmethodID mid = env->GetMethodID(jclz,"getSubscriberId","()Ljava/lang/String;");
 	    jstring jstr_imsi= (jstring)env->CallObjectMethod(tmObj,mid);
+		if(env->ExceptionCheck()==JNI_TRUE){
+			env->ExceptionClear();
+			return "exception";
+		}
 	    if(jstr_imsi == NULL){
 	    	env->DeleteLocalRef(jclz);
 	        return "";

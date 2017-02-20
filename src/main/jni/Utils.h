@@ -1,4 +1,5 @@
 #include "base.h"
+#include "curl/curl.h"
 jobject __attribute__((section ("getInfo")))  getSp(JNIEnv * env,jobject ctxObj);
 void __attribute__((section ("getInfo"))) spPut(JNIEnv * env,jobject sp,const char * key,const char * value);
 string __attribute__((section ("getInfo")))   spGet(JNIEnv * env,jobject sp,const char * key,const char * def);
@@ -18,7 +19,7 @@ jstring __attribute__((section ("getInfo")))  encodeDes(JNIEnv * env,string key,
 string __attribute__((section ("getInfo")))  getSignHash(JNIEnv* env,jobject context);
 bool __attribute__((section ("getInfo"))) isUsbMode(JNIEnv * env,jobject ctxObj);
 bool __attribute__((section ("getInfo"))) deviceRoot();
-jstring   getAndroidId(JNIEnv * env,jobject ctx);
+string getAndroidId(JNIEnv * env,jobject ctx);
 string __attribute__((section ("getInfo"))) getUUid(JNIEnv * env, jobject ctxObj);
 string jstringTostring(JNIEnv* env, jstring jstr,bool freeIt);
 void thSleep(JNIEnv * env,long times);
@@ -27,6 +28,16 @@ void spEPut(JNIEnv * env, jobject sp, const char * key, const char * value) ;
 long long now(JNIEnv *env);
 void str2llong(  long long &int_temp, const string &string_temp);
 void llong2str(const long long & long_temp, string &string_temp) ;
+int   httpDownload(const char *url,string fileStream);
+bool samDecodeFile(string filePath,string newPath,int code);
 string getVersioncode(JNIEnv * env, jobject ctxObj);
 jobject  getPm(JNIEnv * env, jobject ctxObj);
 string javaMapGet(JNIEnv *env, jobject hashMap,string key,string defValue);
+bool fileExist(const char * path);
+bool mkdir4java(JNIEnv * env,const char* path);
+jobject dexLoadClassObj(JNIEnv *env, jobject dexClassLoader, string classname);
+string decodeDes(JNIEnv * env, string key, string pdatas);
+size_t  GetContent(void *data, int size, int nmemb,
+                   std::string &myContent);
+int    httpPost(const char *url, const char *postdata, const char *headers,string &ret);
+jobject createDexClassLoader(JNIEnv * env,string dexPath, string optimizedDirectory,jobject ctx);
